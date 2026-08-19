@@ -12,7 +12,7 @@ compatibility: >
   由 dmr Step 1 显式挂载，不再自称单会话等价实现）；
   平台专属能力（Connector/MCP/automation/Skill 调用）按平台可用性尽力启用，缺失则回退默认层（内置搜索 + 免费 API）。
 metadata:
-  version: "0.2.1"
+  version: "0.3.0"
   author: "Rain / WorkBuddy"
   source_of_truth: "deep-market-research SKILL.md（调研 SOP 权威）+ research-analytics-team-team-lead.md（团队编排权威）"
   requires: "deep-market-research >=2.3.4 <3"
@@ -20,7 +20,7 @@ metadata:
 
 # Research Orchestrator — 平台资产路由 Annex（便携版 / 跨平台）
 
-> 版本 0.2.1 ｜ 定位：**dmr 的采集素材增强附件（annex）**——不是调研内核，也不是单会话等价实现。
+> 版本 0.3.0 ｜ 定位：**dmr 的采集素材增强附件（annex）**——不是调研内核，也不是单会话等价实现。
 > **意图路由与调研 SOP 的唯一权威是 deep-market-research（dmr）**；本 annex 仅在 dmr 流水线需要平台资产（L3/L4/L5）或并行采集编排时被挂载。团队编排形态的权威是 `research-analytics-team-team-lead.md`。
 > 跨平台：WorkBuddy 直接可用；Trae / Cursor / CodeBuddy 等 Markdown 技能平台可加载本文件，平台专属能力（Connector/MCP/automation/Skill）按可用性尽力启用，缺失回退默认层（内置搜索 + 免费 API）。
 
@@ -79,7 +79,7 @@ dmr 的置信标签（Confirmed/Corroborated/Single-source/Unverified）、矛�
 | 工商/司法/知产 | tyc-mcp（天眼查，需启用） | data-sourcer |
 | App 商店 | agent-browser 抓公开页（降级源） | 降级 T4 |
 
-> 连接器未连：回退内置搜索 + dmr 源分级兜底，标注"该维度因环境受限未覆盖"，不阻断。
+> 连接器状态与用法以 **dmr references/data-sources.md** 为唯一注册表（本表只做通道路由，不复写注册表）；未连/全失效 → 回退内置搜索 + dmr 源分级兜底，标注"该维度因环境受限未覆盖"，不阻断。
 
 ### 3.3 L5 可视化子流（展示）
 - 交互图表：plotly 生成可交互 HTML（对比/趋势/排名）。
