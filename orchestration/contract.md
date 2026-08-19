@@ -37,6 +37,13 @@
 | `dispatch` | Agent 工具调度 + SendMessage 下发任务卡（name/subagent_type 传成员 Agent ID） | 子会话 prompt 下发：**子会话不继承 Skills，参数卡必须内联**（角色卡要点+任务卡+dmr 裁决标准要点全部写进 prompt，不得假设子会话能加载 dmr） | 内联执行该成员职责段（预算份额内），无跨会话传递 |
 | `collect` | 成员回传消息 → 主理人解析结构化摘要 → 写入来源池 | 子会话产物节点解析 → 摘要回写主节点 → 入池 | 产出直接写入来源池（Phase 2 裁决唯一入口） |
 
+## WorkBuddy 适配参数细则（dispatch / assemble）
+
+1. Agent 工具的 `name` 参数传入成员的 **Agent ID**（MD 文件名，不含 `.md`）；`subagent_type` 传入相同值。禁止使用中文名或自创名称。
+2. `assemble` = 主理人 TeamCreate 建团队 + spawn 各成员（subagent_type 同上）；协作边界由主理人声明，严禁委派成员建队。
+3. `collect` = 解析成员 SendMessage 回传的结构化摘要；跨成员信息流必须经主理人中转（消息中转铁律）。
+4. 超时账本口径：总墙钟 SLA 自 `assemble` 完成起算；快版单线程自首步执行起算。
+
 ## 失败与降级适配
 
 | 契约动词 | 失败表现 | 降级动作 |

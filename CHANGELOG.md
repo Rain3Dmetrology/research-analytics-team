@@ -1,3 +1,18 @@
+## [0.5.0] - 2026-08-20
+
+Primitive downshift (audit M2, R2-B): platform verbs leave the agent bodies — orchestration now speaks contract verbs only; platform syntax lives exclusively in `orchestration/contract.md`.
+
+### Changed
+- **agent bodies de-coupled from WorkBuddy syntax**: team-lead's 10 platform-verb occurrences (TeamCreate / spawn / SendMessage / subagent_type) replaced with contract verbs — `assemble`（组队）/ `dispatch`（派单）/ `collect`（收编）— each pointing to the contract adapter table; forbidden-behavior and budget-governor sections re-phrased on contract verbs with identical semantics.
+- **member agents return via `collect`**: the "SendMessage 回传" sections in all 4 member files renamed to "回传（`collect` 契约）"; return semantics unchanged (structured digest to the lead).
+- **portable/SKILL.md**: 3 platform-verb occurrences replaced with `dispatch` wording (domain pre-allocation + two-phase pool clauses unchanged).
+- **collaboration rule 5 parameter details moved into contract.md**: the Agent-tool `name`/`subagent_type` member-ID resolution rules now live in contract.md's "WorkBuddy 适配参数细则"; team-lead rule 5 references the contract instead of restating.
+- **README**: fast-mode line re-phrased on contract verbs; CI check 8 description updated.
+
+### Added
+- **contract.md WorkBuddy adapter parameter details**: Agent-tool parameter rules (name/subagent_type = member Agent ID, no Chinese/self-invented names), assemble/collect message-relay iron rule, and the wall-clock SLA accounting basis (`assemble` completion for std / first step for fast).
+- **CI check 8 primitive-ban guard**: TeamCreate / spawn / SendMessage / subagent_type are banned outside `orchestration/contract.md` — agents/, portable/SKILL.md, and README are scanned; reintroducing any platform verb fails the build.
+
 ## [0.4.0] - 2026-08-20
 
 Contract layer (audit M2, R2-A): orchestration primitives de-coupled from any single platform — pure additive change, agent bodies untouched.

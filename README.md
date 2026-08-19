@@ -20,7 +20,7 @@
 
 ### Usage
 - **WorkBuddy**: select the expert, or type a trigger like `调研 [行业/赛道] 的竞争格局与趋势` — the lead runs the full SOP with the 4-member team.
-- **Fast mode**: single-threaded by default — the lead runs dmr Step 1/4/8 directly (≤10 min SLA), skipping TeamCreate/spawn unless a team is explicitly requested.
+- **Fast mode**: single-threaded by default — the lead runs dmr Step 1/4/8 directly (≤10 min SLA), skipping team assembly (`assemble`/`dispatch`) unless a team is explicitly requested.
 - **Portable annex**: never auto-triggers on research words. Ask explicitly for asset routing / connector mapping / parallel collection, or let dmr Step 1 mount it.
 
 ### Engineering robustness (v0.3.0)
@@ -48,15 +48,16 @@
 5. every agent still references the dmr core
 6. robustness regression guards (lead tokens + member checkpoints, no magic numbers)
 7. annex demotion + connector-registry guards (portable stays an annex; connector usage routed to dmr `references/data-sources.md`)
-8. README drift guard (three-layer positioning, templates A–E, CI count matches)
+8. README drift + primitive-ban guards (three-layer positioning, templates A–E, CI count matches; platform verbs banned outside contract.md)
 9. orchestration contract guard (contract.md exists, 3 verbs × 3 platforms, ≤150 lines, referenced by team-lead)
 
 ### History & roadmap
+- **0.5.0** — primitive downshift: all platform-specific orchestration verbs removed from agent bodies, portable, and README; agents now speak contract verbs only; WorkBuddy parameter details live in contract.md; CI primitive-ban guard.
 - **0.4.0** — orchestration contract layer: 3 platform-agnostic verbs (`assemble` / `dispatch` / `collect`) with a 3-platform adapter table (WorkBuddy / Coze / single-thread), incl. Coze no-skill-inheritance (inline param cards) and schedule-trigger monitoring; CI check 9.
 - **0.3.0** — coze-audit batch: three-layer README alignment + drift guard, fast-mode single-thread rule, honest budget counting, adversarial-audit floor, connector-registry routing, avatar slimming.
 - **0.2.1** — portable demoted to asset-routing annex (A1); all 25 audit findings closed.
 - **0.2.0** — budget governor, two-phase source pool, member checkpoints, run-manifest, externalized adversarial audit.
-- Roadmap: v0.5.0 primitive downshift — agents' platform verbs replaced by contract-verb references.
+- Roadmap: platform adapters as needed (new column = new platform); contract layer stays thin.
 
 ### Acknowledgments
 - Credibility core inherited from [deep-market-research](https://github.com/Rain3Dmetrology/deep-market-research) (dmr); engineering-robustness mechanisms inspired by `gpt-researcher-team` (timeout / fallback / notification / source-pool / multi-dimensional review).
@@ -81,7 +82,7 @@
 
 ### 用法
 - **WorkBuddy**：选择该专家，或输入触发词如 `调研 [行业/赛道] 的竞争格局与趋势`——主编带 4 成员跑完整 SOP。
-- **快版**：默认单线程——主编直跑 dmr Step 1/4/8（SLA ≤10 分钟），免 TeamCreate/spawn；仅用户显式要求时才启用团队形态。
+- **快版**：默认单线程——主编直跑 dmr Step 1/4/8（SLA ≤10 分钟），免 `assemble`/`dispatch`；仅用户显式要求时才启用团队形态。
 - **Portable annex**：绝不因调研词自动触发。需明确点名资产路由 / 连接器映射 / 并行采集，或由 dmr Step 1 挂载。
 
 ### 工程健壮性（v0.3.0）
@@ -109,15 +110,16 @@
 5. 每个 agent 仍引用 dmr 内核
 6. 健壮性机制回归守卫（主理人 token + 成员 checkpoint，无魔法数字）
 7. annex 降维 + 连接器注册表守卫（portable 保持 annex 定位；连接器用法路由到 dmr `references/data-sources.md`）
-8. README 漂移守卫（三层定位、模板 A–E、CI 项数一致）
+8. README 漂移 + 原语清零守卫（三层定位、模板 A–E、CI 项数一致；平台动词仅允许出现在 contract.md）
 9. 编排契约守卫（contract.md 存在、3 动词 × 3 平台、≤150 行、被 team-lead 引用）
 
 ### 版本历史与路线图
+- **0.5.0** — 原语下沉：agents 正文、portable、README 中的平台专属编排动词全部清零，agents 只说契约动词；WorkBuddy 参数细则收编入 contract.md；CI 原语清零守卫。
 - **0.4.0** — 编排契约层：3 个平台无关动词（`assemble` 组队 / `dispatch` 派单 / `collect` 收编）+ 3 平台适配表（WorkBuddy / Coze / 单线程），含 Coze 子会话不继承 Skills（参数卡内联）与日程周期触发监测；CI check 9。
 - **0.3.0** — coze 审计批次：三层定位 README 对齐 + 漂移守卫、快版单线程铁律、预算器计数口径、对抗审计最低标准、连接器注册表路由、avatar 瘦身。
 - **0.2.1** — portable 降维为资产路由 annex（A1）；25 项审计发现全部关闭。
 - **0.2.0** — 预算器、两段式来源池、成员 checkpoint、run-manifest、对抗审计外部化。
-- 路线图：v0.5.0 原语下沉——agents 正文平台动词替换为契约动词引用。
+- 路线图：按需增加平台适配列（新平台=加一列）；契约层保持薄。
 
 ### 致谢
 - 可信度内核继承自 [deep-market-research](https://github.com/Rain3Dmetrology/deep-market-research)（dmr）；工程健壮性机制借鉴 `gpt-researcher-team` 的超时/兜底/通报/来源池与多维审稿思路。

@@ -14,10 +14,12 @@ Fails the build when any of these drift:
      equivalence or own research-intent routing; dmr owns intent routing;
      connector usage in lead + portable must route to the dmr registry
      (references/data-sources.md)
-  8. README drift guard (audit M1): README must keep the three-layer
-     positioning (no "two form factors" / "两种形态"), must mention the annex
-     role, templates A-E, the portable no-trigger pledge, and must state the
-     actual CI check count
+  8. README drift guard (audit M1) + primitive-ban (audit M2, R2-B): README must
+     keep the three-layer positioning (no "two form factors" / "两种形态"),
+     must mention the annex role, templates A-E, the portable no-trigger
+     pledge, and must state the actual CI check count; platform primitives
+     (TeamCreate / spawn / SendMessage / subagent_type) are banned outside
+     orchestration/contract.md (agents / portable / README scanned)
   9. orchestration contract guard (audit M2, R2-A): orchestration/contract.md
      exists, defines the 3 contract verbs (assemble / dispatch / collect),
      carries the 3-platform adapter table (WorkBuddy / Coze / single-thread)
@@ -186,6 +188,14 @@ if not en_m or int(en_m.group(1)) != CHECK_COUNT:
     fail(f"README EN section must state the actual CI check count ({CHECK_COUNT})")
 if not cn_m or int(cn_m.group(1)) != CHECK_COUNT:
     fail(f"README CN section must state the actual CI check count ({CHECK_COUNT})")
+
+# primitive-ban guard (audit M2, R2-B): platform syntax lives ONLY in contract.md
+PRIMITIVE_TOKENS = ("TeamCreate", "spawn", "SendMessage", "subagent_type")
+for rel in [f"agents/{f}" for f in agent_files] + ["portable/SKILL.md", "README.md"]:
+    txt = (ROOT / rel).read_text(encoding="utf-8")
+    for tok in PRIMITIVE_TOKENS:
+        if tok in txt:
+            fail(f"{rel} contains platform primitive {tok!r} — use contract verbs; platform syntax lives only in orchestration/contract.md (audit M2, R2-B)")
 
 # --- 9. orchestration contract guard (audit M2, R2-A) -------------------------
 contract_path = ROOT / "orchestration" / "contract.md"

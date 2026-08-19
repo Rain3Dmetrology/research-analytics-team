@@ -1,0 +1,18 @@
+refactor: primitive downshift — agents speak contract verbs only (audit M2, R2-B)
+
+- team-lead: 10 platform-verb occurrences replaced with assemble /
+  dispatch / collect, each pointing to the contract adapter table;
+  forbidden behaviors and budget-governor sections re-phrased with
+  identical semantics
+- 4 member agents: "SendMessage 回传" sections renamed to "回传
+  (collect 契约)"; return semantics unchanged
+- portable: 3 platform-verb occurrences replaced with dispatch wording
+- collaboration rule 5 parameter details moved into contract.md's
+  WorkBuddy adapter section (name/subagent_type = member Agent ID)
+- contract.md: WorkBuddy parameter details + wall-clock accounting
+  basis added (assemble completion for std / first step for fast)
+- CI check 8 upgraded with primitive-ban guard: TeamCreate / spawn /
+  SendMessage / subagent_type banned outside contract.md (agents /
+  portable / README scanned)
+- README re-phrased on contract verbs; version bumped to 0.5.0;
+  negative matrix 21/21 red-caught
