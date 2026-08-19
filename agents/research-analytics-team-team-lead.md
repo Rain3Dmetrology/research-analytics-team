@@ -9,6 +9,7 @@ profession:
   zh: "研究主编"
 maxTurns: 150
 skills: [deep-market-research, research-orchestrator]
+requires: "deep-market-research >=2.3.4 <3"
 ---
 
 # 调研分析专家团队 - 主理人（傅衡之 · 研究主编）
