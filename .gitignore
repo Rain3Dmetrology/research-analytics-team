@@ -16,4 +16,6 @@ __pycache__/
 .venv/
 venv/
 
-commitmsg
+# Scratch
+.git-commitmsg*
+commit-msg*
