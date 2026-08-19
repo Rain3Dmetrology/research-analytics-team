@@ -10,6 +10,8 @@ Fails the build when any of these drift:
   6. robustness-mechanism regression guards: every member file keeps its maxTurns
      checkpoint obligation; team-lead keeps budget governor / domain pre-allocation /
      two-phase pool / run-manifest / adjudication-path; portable stays in sync
+  7. annex demotion guard (audit A1): portable must not claim single-session
+     equivalence or own research-intent routing; dmr owns intent routing
 """
 import json
 import re
@@ -115,10 +117,22 @@ for token in LEAD_GUARDS:
     if token not in lead:
         fail(f"team-lead SOP lost robustness mechanism token: {token!r}")
 
-PORTABLE_GUARDS = ["全局预算器", "分域预分配", "run-manifest", "裁决路径"]
+PORTABLE_GUARDS = ["资产路由", "全局预算器", "分域预分配", "run-manifest", "裁决路径"]
 for token in PORTABLE_GUARDS:
     if token not in portable:
         fail(f"portable/SKILL.md out of sync with team-lead SOP (missing token: {token!r})")
+
+# --- 7. annex demotion guard (audit A1) --------------------------------------
+ANNEX_PORTABLE_GUARDS = [
+    "不再自称单会话等价实现",  # demotion declaration must stay
+    "不响应调研类触发词",      # must not own research-intent routing
+    "挂载方式与资产路由表",    # annex positioning section must stay
+]
+for token in ANNEX_PORTABLE_GUARDS:
+    if token not in portable:
+        fail(f"portable/SKILL.md annex demotion (audit A1) regressed: missing token {token!r}")
+if "降维为平台资产路由 annex" not in lead:
+    fail("team-lead SOP lost the portable annex-demotion statement (audit A1)")
 
 # --- report -----------------------------------------------------------------
 if errors:

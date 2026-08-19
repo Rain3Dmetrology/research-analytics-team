@@ -1,52 +1,54 @@
 ---
 name: research-orchestrator
 description: >
-  调研编排组合技能（零自研内核）：把 deep-market-research(dmr) 的可信度内核与平台调研资产
-  （xlsx/Python、可连 MCP 取数、plotly/canva 可视化、并行采集、周期任务）编排成统一入口。
-  覆盖 Coze「调研分析技能包」同等能力，并在可信度/中文/零成本出域上超越。
-  适用：行业/竞品/公司尽调/数据论证/周期监测类调研。原则：集成已有，不造轮子，内核永远是 dmr。
+  平台资产路由 annex（deep-market-research/dmr 的采集素材增强附件）：把平台可用调研资产
+  （xlsx/Python 建模、可连 MCP 结构化取数、plotly/canva 可视化、并行采集编排、周期任务）
+  整理成一张资产路由表，供 dmr Step 1 采集阶段挂载。**不接管意图路由、不是独立调研入口**；
+  调研类触发词与 SOP 权威均在 dmr。原则：集成已有，不造轮子，内核永远是 dmr。
 license: MIT
 compatibility: >
   跨平台 Markdown 技能（WorkBuddy / Trae / Cursor / CodeBuddy 等）。本文件是
-  research-analytics-team 专家包在「无 Team 编排」时的等价单会话实现；
+  research-analytics-team 专家包的**平台资产路由 annex**（v0.2.1 起降维定位：
+  由 dmr Step 1 显式挂载，不再自称单会话等价实现）；
   平台专属能力（Connector/MCP/automation/Skill 调用）按平台可用性尽力启用，缺失则回退默认层（内置搜索 + 免费 API）。
 metadata:
-  version: "0.2.0"
+  version: "0.2.1"
   author: "Rain / WorkBuddy"
-  source_of_truth: "research-analytics-team-team-lead.md（团队 SOP 为权威）"
+  source_of_truth: "deep-market-research SKILL.md（调研 SOP 权威）+ research-analytics-team-team-lead.md（团队编排权威）"
   requires: "deep-market-research >=2.3.4 <3"
 ---
 
-# Research Orchestrator — 调研编排组合技能（便携版 / 跨平台）
+# Research Orchestrator — 平台资产路由 Annex（便携版 / 跨平台）
 
-> 版本 0.2.0 ｜ 定位：**编排层**，不是新调研内核。
-> 本文件是 `research-analytics-team` 专家包在「无 Team 编排」时的**等价单会话实现**；团队 SOP（`research-analytics-team-team-lead.md`）为唯一事实源，二者描述必须一致、不得漂移。
+> 版本 0.2.1 ｜ 定位：**dmr 的采集素材增强附件（annex）**——不是调研内核，也不是单会话等价实现。
+> **意图路由与调研 SOP 的唯一权威是 deep-market-research（dmr）**；本 annex 仅在 dmr 流水线需要平台资产（L3/L4/L5）或并行采集编排时被挂载。团队编排形态的权威是 `research-analytics-team-team-lead.md`。
 > 跨平台：WorkBuddy 直接可用；Trae / Cursor / CodeBuddy 等 Markdown 技能平台可加载本文件，平台专属能力（Connector/MCP/automation/Skill）按可用性尽力启用，缺失回退默认层（内置搜索 + 免费 API）。
 
 ---
 
-## 一、入口与意图路由
+## 一、挂载方式与资产路由表
 
-用户触发词：`调研 / 行业 / 竞品 / 尽调 / 对标 / 市场测算 / 数据论证 / 周期监测 / 扒一下 / 挖一下`。
+**本 annex 不响应调研类触发词**——`调研 / 行业 / 竞品 / 尽调 / 对标 / 市场测算 / 数据论证 / 扒一下 / 挖一下 / 对位` 等一律由 **dmr** 接管（见其 §七 触发与执行约定）。本 annex 的挂载方式仅两种：
+1. **dmr 主管线显式引用**：dmr Step 1（采集）阶段需要平台资产增强时挂载本表；
+2. **用户明确点名资产编排**：用户原话含「资产路由 / 连接器映射 / 取数通道 / 并行采集编排」时。
 
-**Step R0 — 意图识别（薄路由，不替代 dmr Step 0）**
+**资产路由表（挂载后按 dmr 已判定的素材需求选通道；本表不做二次意图路由）**
 
-| 用户意图信号 | 路由目标 | 复用资产 |
+| dmr 已判定的素材需求 | 路由目标 | 复用资产 |
 |--------------|----------|----------|
-| 行业/赛道/产业链/趋势/市场规模 | dmr 模板 B（行业赛道） | deep-market-research |
-| 公司/竞品/尽调/对位 | dmr 模板 C（公司竞品） | deep-market-research |
+| 主管线（模板 A/B/C/D/E 任一） | dmr Step 0–8 | deep-market-research |
 | 上传 CSV/Excel / 建模 / 统计 | L3 数据子流 | xlsx + 受管 Python |
 | 专利/财报/工商/行情 等结构化取数 | L4 取数子流 | 已连 MCP（若可用） |
 | 需要图表/交互展示 | L5 可视化子流 | plotly + canva |
-| 每周/每月/持续盯 | 自治层 | 平台周期任务能力（若可用） |
+| 周报/月报/持续监测 | dmr 模板 E（监测增量版，v2.4.0+） | deep-market-research + 平台周期任务（若可用） |
 
-> 路由后**立即调用 deep-market-research 进入其 Step 0–8 主管线**；L3/L4/L5 是 dmr Step 1 采集阶段的**素材增强**，不是替代。
+> L3/L4/L5 是 dmr Step 1 采集阶段的**素材增强**，不是替代；一切数据回流 dmr 证据池统一裁决。
 
 ---
 
-## 二、可信度内核（强制，不可绕过）
+## 二、可信度内核（引用 dmr，不重复定义）
 
-**任何时候都必须先走 dmr 的 Step 0–8 + 对应模板。** 本技能禁止：
+**挂载本 annex 的任何运行都必须先走 dmr 的 Step 0–8 + 对应模板。** 本 annex 禁止：
 - ❌ 跳过 dmr 的源分级/交叉验证直接出结论；
 - ❌ 把 L3/L4 取到的数据当 Tier 1 硬事实而不经 dmr 裁决；
 - ❌ 用可视化美化替代证据论证。
@@ -127,8 +129,10 @@ dmr 的置信标签（Confirmed/Corroborated/Single-source/Unverified）、矛�
 
 ## 七、典型调用示例
 
+> 示例展示 **dmr 主导、本 annex 挂载资产路径**的完整编排（用户调研意图由 dmr 接管，本 annex 只出资产路由）。
+
 **用户**：「调研中国工业 AI 3D 视觉测量赛道，重点对标奥普特、凌云光，出一份带数据的周报。」
-1. **R0 路由**：行业(模板B) + 竞品(模板C) + 数据论证 + 周报(自治)。
+1. **意图接管**：dmr Step 0 收敛意图 → 行业(模板B) + 竞品(模板C)；周报诉求由 dmr 模板 E 承接（存在上期快照时）。
 2. **内核**：deep-market-research → Step 0 收敛 → 模板 B+C。
 3. **并行采集**：A 学术/免费API；B 中文UGC/公众号；C 智慧芽专利+westock财报+tyc工商(若已连)；D 上传数据预处理。
 4. **L5**：plotly 对比/趋势图，canva 汇报看板。
