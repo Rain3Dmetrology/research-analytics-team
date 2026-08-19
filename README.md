@@ -24,10 +24,11 @@
 - Any platform: load the SKILL, then `调研 ...`; it routes to dmr and runs the SOP.
 
 ### Files
-- `.codebuddy-plugin/plugin.json` — package manifest
+- `.codebuddy-plugin/plugin.json` — package manifest (incl. `requires: deep-market-research >=2.3.4 <3` version pin)
 - `agents/` — 5 role agents (team-lead + 4 members)
 - `avatars/` — member icons
 - `portable/SKILL.md` — cross-platform single-session skill
+- `.github/workflows/consistency-gate.yml` — CI single-source-of-truth gate (version parity / pin presence / manifest parity)
 - `CHANGELOG.md`, `LICENSE`
 
 ---
@@ -54,11 +55,12 @@
 - 任意平台：加载该 SKILL，然后 `调研 ...`；自动路由 dmr 并跑完整 SOP。
 
 ### 文件结构
-- `.codebuddy-plugin/plugin.json` — 包清单
+- `.codebuddy-plugin/plugin.json` — 包清单（含 `requires: deep-market-research >=2.3.4 <3` 版本 pin）
 - `agents/` — 5 个角色 agent（主理人 + 4 成员）
 - `avatars/` — 成员图标
 - `portable/SKILL.md` — 跨平台单会话技能
+- `.github/workflows/consistency-gate.yml` — CI 单一事实源一致性门禁（版本对齐 / pin 存在 / 清单对齐）
 - `CHANGELOG.md`、`LICENSE`
 
 ### 致谢
-- 可信度内核继承自 [deep-market-research](https://github.com/)（dmr）；工程健壮性机制借鉴 `gpt-researcher-team` 的超时/兜底/通报/来源池与 6 维审稿思路。
+- 可信度内核继承自 [deep-market-research](https://github.com/Rain3Dmetrology/deep-market-research)（dmr）；工程健壮性机制借鉴 `gpt-researcher-team` 的超时/兜底/通报/来源池与 6 维审稿思路。
