@@ -1,3 +1,13 @@
+## [0.1.2] - 2026-08-19
+
+### Added
+- Version pin: `requires: "deep-market-research >=2.3.4 <3"` declared in three places (`.codebuddy-plugin/plugin.json`, team-lead frontmatter, `portable/SKILL.md` metadata) — dmr core upgrades now require explicit review, preventing silent template drift.
+- CI single-source-of-truth gate (`.github/workflows/consistency-gate.yml` + `scripts/consistency_check.py`): version parity across plugin.json / portable frontmatter / portable body note / latest CHANGELOG entry; requires-pin presence in all three declaration sites; README dead-link check (bare `github.com` attribution); agent-manifest parity (agents/ dir vs plugin.json agents + teamInfo members); dmr reference integrity in every agent file.
+
+### Fixed
+- `portable/SKILL.md` body version note (0.1.0) contradicted its own frontmatter (0.1.1) — unified to 0.1.2.
+- README attribution linked dmr to bare `https://github.com/` (dead link) — now points to the real repository.
+
 ## [0.1.1] - 2026-08-19
 
 ### Changed
