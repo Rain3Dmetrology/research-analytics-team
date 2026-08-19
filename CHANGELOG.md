@@ -1,3 +1,27 @@
+## [0.2.0] - 2026-08-19
+
+Audit P1 batch: engineering-robustness mechanisms promoted from prose promises to enforced SOP + CI guards. Resolves findings B3 / C1 / C2 / A2 / A3 / A4 / B2 / B4 / B5 / B6 / C4 / C5 / C7 / C9 / D1 / D2 from the dmr-RAT 2026 audit.
+
+### Added
+- **C1 global budget governor** (team-lead SOP §工程健壮性机制·0): wall-clock SLA (std ≤30 min / fast ≤10 min) + total search cap (≤60, Phase1 members ≤15 each, lead review ≤10), 80% early-warning broadcast, 100% freeze → degraded skeleton delivery with budget-truncation disclosure.
+- **C2 two-phase source pool**: Phase1-pre domain pre-allocation (D1 academic/official, D2 Chinese UGC, D3 quantitative — one owner per entity×domain) kills parallel write-blind duplication; Phase2 merge adjudication (higher-Tier/newer-date wins, conflicts → contradiction ledger) is now the sole post-Phase1 evidence entry.
+- **B3 member checkpoint obligations**: all four member agents gained a "maxTurns checkpoint 义务" section — at ≤20% remaining turns or lead budget warning: stop new collection, immediately return structured partial output (no hang / no silent exit / no discarded evidence), matching the lead's timeout-degradation table.
+- **C7/D2 run-manifest.json**: every run archives query / param-card snapshot / final source pool / adjudication decisions / component versions (dmr pin + team version) / budget consumption / degradation events — reproducibility upgraded from process promise to runtime artifact.
+- **B5 knowledge archival**: Phase N closing triple — dmr §七-aligned structured note (entity-level evidence cache, mandatory pre-read on re-runs), run manifest, next-run warmup hint.
+- **D1 intervention windows**: stage-boundary progress notifications now open an explicit continue/pivot/supplement window (fast path exempt); mid-run additions → pool write + partial recompute.
+- **C4 externalized adversarial audit**: ≥1 of the ≥2 critic classes routes to external models first (ask-opencli Grok/Gemini, or multi-ai-research, if platform-connected); fallback to same-model critic with explicit "同模自评" disclosure.
+- **C1 budget line in progress notifications** + **A4 dual-axis quality report** (dmr 100-point scorecard + confidence distribution) + **B2 adjudication-path field** in methodology statements.
+- **CI gate check 6 (robustness regression guards)**: member files must keep checkpoint + structured-digest contracts; team-lead must keep budget governor / domain pre-allocation / two-phase pool / run-manifest / adjudication-path / render-convergence / intervention-window tokens; portable must stay in sync.
+
+### Changed
+- **B4 render convergence**: Phase1 members now produce item-level structured finding lists only (no prose rendering); full-report rendering happens exactly once at Phase N — eliminates double rendering (est. 30–40% token waste) and inter-render drift.
+- **C5 structured return contract**: members return ≤300-char digest + structured tables (not prose); lead assembles per-chapter and rolls off assembled content (context-overload guard).
+- **A2/B6 QC wording aligned to dmr**: 6-dimension definitions and round semantics are owned by dmr Phase3 (chapter-level, max 3 rounds, forced pass with residual improvements); the lead's final gate is a re-check, not a re-definition.
+- **A3 param card**: research param card references the dmr Step-0 8-field superset (no schema duplication), adds domain-assignment and budget rows.
+
+### Fixed
+- **C9 measurement-discipline gaps** (data-analyst): cross-currency normalization (rate + as-of date), TAM/SAM/SOM three-scenario ranges (no single-point precision theater), paid-report secondhand citation chains with circular-reference detection, structural-proxy anchors (customs / patent trends / listed-company segment triangulation).
+
 ## [0.1.2] - 2026-08-19
 
 ### Added
