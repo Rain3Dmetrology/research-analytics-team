@@ -11,7 +11,13 @@ Fails the build when any of these drift:
      checkpoint obligation; team-lead keeps budget governor / domain pre-allocation /
      two-phase pool / run-manifest / adjudication-path; portable stays in sync
   7. annex demotion guard (audit A1): portable must not claim single-session
-     equivalence or own research-intent routing; dmr owns intent routing
+     equivalence or own research-intent routing; dmr owns intent routing;
+     connector usage in lead + portable must route to the dmr registry
+     (references/data-sources.md)
+  8. README drift guard (audit M1): README must keep the three-layer
+     positioning (no "two form factors" / "两种形态"), must mention the annex
+     role, templates A-E, the portable no-trigger pledge, and must state the
+     actual CI check count
 """
 import json
 import re
@@ -103,6 +109,8 @@ for f in member_files:
         fail(f"agents/{f} lost its 'maxTurns checkpoint 义务' section (timeout-degradation contract)")
     if "结构化摘要" not in txt:
         fail(f"agents/{f} lost the structured-digest return contract (lead context overload guard)")
+    if "第 40 轮" in txt:
+        fail(f"agents/{f} reintroduced a magic-number checkpoint ('第 40 轮'); base it on frontmatter maxTurns (audit D5)")
 
 LEAD_GUARDS = [
     "全局预算器",
@@ -112,10 +120,19 @@ LEAD_GUARDS = [
     "裁决路径",
     "渲染收敛",
     "介入窗口",
+    "快版默认单线程",    # audit M3 (R1-2)
+    "计数口径诚实条款",  # audit V1 (R1-3)
+    "反证清单",          # audit V4 (R1-4)
+    "不可互相替代",      # audit D2 (R1-8)
 ]
 for token in LEAD_GUARDS:
     if token not in lead:
         fail(f"team-lead SOP lost robustness mechanism token: {token!r}")
+
+THRESHOLD_TOKEN = "≥2 独立 Tier1–3"
+threshold_count = lead.count(THRESHOLD_TOKEN)
+if threshold_count != 1:
+    fail(f"team-lead must define the cross-validation threshold exactly once (audit D1), found {threshold_count} occurrences of {THRESHOLD_TOKEN!r}")
 
 PORTABLE_GUARDS = ["资产路由", "全局预算器", "分域预分配", "run-manifest", "裁决路径"]
 for token in PORTABLE_GUARDS:
@@ -133,6 +150,37 @@ for token in ANNEX_PORTABLE_GUARDS:
         fail(f"portable/SKILL.md annex demotion (audit A1) regressed: missing token {token!r}")
 if "降维为平台资产路由 annex" not in lead:
     fail("team-lead SOP lost the portable annex-demotion statement (audit A1)")
+
+REGISTRY_REF = "references/data-sources.md"
+if REGISTRY_REF not in lead:
+    fail(f"team-lead must route connector usage to the dmr registry ({REGISTRY_REF}) as the single source of truth (audit V2)")
+if REGISTRY_REF not in portable:
+    fail(f"portable/SKILL.md must route connector usage to the dmr registry ({REGISTRY_REF}) as the single source of truth (audit V2)")
+
+# --- 8. README drift guard (audit M1) ----------------------------------------
+CHECK_COUNT = 8
+README_FORBIDDEN = [
+    "two form factors",  # v0.2.1+ is three-layer positioning; portable is an annex, not an equal form
+    "两种形态",            # CN mirror of the same drift
+]
+README_REQUIRED = [
+    "annex",        # three-layer positioning must keep the annex wording
+    "A–E",          # dmr templates A-E, not B/C only
+    "不响应调研",    # portable documented as non-trigger
+]
+for token in README_FORBIDDEN:
+    if token in readme:
+        fail(f"README drift (audit M1): forbidden token {token!r} — since v0.2.1 portable is an annex, not an equal form factor")
+for token in README_REQUIRED:
+    if token not in readme:
+        fail(f"README drift (audit M1): README missing required token {token!r}")
+
+en_m = re.search(r"(\d+)\s+consistency checks", readme)
+cn_m = re.search(r"(\d+)\s*项一致性检查", readme)
+if not en_m or int(en_m.group(1)) != CHECK_COUNT:
+    fail(f"README EN section must state the actual CI check count ({CHECK_COUNT})")
+if not cn_m or int(cn_m.group(1)) != CHECK_COUNT:
+    fail(f"README CN section must state the actual CI check count ({CHECK_COUNT})")
 
 # --- report -----------------------------------------------------------------
 if errors:

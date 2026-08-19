@@ -1,3 +1,24 @@
+## [0.3.0] - 2026-08-20
+
+Coze cross-audit batch: resolves 8 coze findings (M1 / M3 / V1 / V2 / V4 / D1 / D2 / D5) + asset slimming (D4). Positioning and mechanism drift is now CI-enforced, not promised.
+
+### Changed
+- **M1 — README three-layer re-alignment**: README rewritten around dmr (credibility kernel + the only research entry) / this repo (team-orchestration form) / `portable/SKILL.md` (asset-routing annex, never auto-triggered); templates A–E coverage restored; CI check-count description synced with the script — all four drift spots closed.
+- **M3 — fast-mode single-thread rule**: fast mode defaults to single-thread (lead runs dmr Step 1/4/8 directly, ≤10-min SLA), TeamCreate/spawn only on explicit user request; scheduling-failure fallback to single-thread is reclassified as an exception path — the ≤10-min SLA vs. team-overhead contradiction is dissolved.
+- **D1 — single threshold definition**: the "≥2 独立 Tier1–3 源确认" threshold now lives once in the team-lead preamble; Phase-2 adjudication and the 6-dim QC gate reference it instead of restating the number; CI guards occurrence count == 1.
+- **D5 — checkpoint de-magicked**: all four member agents base the ≤20% checkpoint on their own frontmatter `maxTurns` instead of the hardcoded "约第 40 轮起，maxTurns=50"; CI forbids reintroduction of the magic number.
+- **V2 — connector registry routing**: team-lead member-capability list and the portable asset table now route connector status/usage to dmr `references/data-sources.md` as the single registry (quote-don't-copy), with an all-connectors-failed → default-layer fallback disclosed in the report; CI guards both references.
+- **plugin.json**: description de-drifted (templates A–E, annex positioning, budget-governor mechanisms) + `patsnap` typo fix.
+
+### Added
+- **CI check 8 — README drift guard**: forbids "two form factors" / "两种形态" (annex demotion wording), requires the annex wording / templates A–E / no-trigger pledge, and enforces that the README-stated CI check count matches the script.
+- **V1 — honest budget-counting clause**: search-cap enforcement distinguishes platform hard limits from lead self-counting; actual consumption and counting basis (hard-limit / self-count) are recorded in run-manifest.json; self-counting must never be presented as platform-enforced in methodology statements.
+- **V4 — adversarial-audit floor (non-degradable)**: critics must be role-swapped (external model in its own identity; same-model fallback must declare an "opposing reviewer" stance and attack after restating), each critic class produces a ≥3-item counter-evidence list (0 items = not executed), and counter-evidence must land in the contradiction ledger or open questions — never silently dropped.
+- **D2 — three-QC-layer single responsibility**: 6-dim QC (structural coverage) / adversarial audit (counter-evidence & balance) / lint (format & citations) declared non-interchangeable; any missing layer must be disclosed in the methodology statement.
+
+### Fixed
+- **D4 — avatar slimming**: 6 avatars resampled to 256×256 with 256-color quantization; repo blob total 6.81 MB → <1 MB (per-image ≤18 KB), manifest paths unchanged.
+
 ## [0.2.1] - 2026-08-19
 
 Audit follow-up batch: resolves remaining findings A1 / A5 + CI modernization. Closes all 25 findings from the dmr-RAT 2026 audit (A1 here; C8/D3/D4 resolved on the dmr side as v2.4.0).
