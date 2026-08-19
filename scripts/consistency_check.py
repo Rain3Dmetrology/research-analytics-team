@@ -18,6 +18,11 @@ Fails the build when any of these drift:
      positioning (no "two form factors" / "两种形态"), must mention the annex
      role, templates A-E, the portable no-trigger pledge, and must state the
      actual CI check count
+  9. orchestration contract guard (audit M2, R2-A): orchestration/contract.md
+     exists, defines the 3 contract verbs (assemble / dispatch / collect),
+     carries the 3-platform adapter table (WorkBuddy / Coze / single-thread)
+     with the Coze no-skill-inheritance constraint, stays <= 150 lines, and
+     is referenced by the team-lead SOP
 """
 import json
 import re
@@ -158,7 +163,7 @@ if REGISTRY_REF not in portable:
     fail(f"portable/SKILL.md must route connector usage to the dmr registry ({REGISTRY_REF}) as the single source of truth (audit V2)")
 
 # --- 8. README drift guard (audit M1) ----------------------------------------
-CHECK_COUNT = 8
+CHECK_COUNT = 9
 README_FORBIDDEN = [
     "two form factors",  # v0.2.1+ is three-layer positioning; portable is an annex, not an equal form
     "两种形态",            # CN mirror of the same drift
@@ -181,6 +186,28 @@ if not en_m or int(en_m.group(1)) != CHECK_COUNT:
     fail(f"README EN section must state the actual CI check count ({CHECK_COUNT})")
 if not cn_m or int(cn_m.group(1)) != CHECK_COUNT:
     fail(f"README CN section must state the actual CI check count ({CHECK_COUNT})")
+
+# --- 9. orchestration contract guard (audit M2, R2-A) -------------------------
+contract_path = ROOT / "orchestration" / "contract.md"
+if not contract_path.exists():
+    fail("orchestration/contract.md missing — the contract layer is required (audit M2, R2-A)")
+else:
+    contract = contract_path.read_text(encoding="utf-8")
+    for verb in ("assemble", "dispatch", "collect"):
+        if verb not in contract:
+            fail(f"orchestration/contract.md missing contract verb {verb!r}")
+    for platform in ("WorkBuddy", "Coze", "单线程"):
+        if platform not in contract:
+            fail(f"orchestration/contract.md adapter table missing platform {platform!r}")
+    if "子会话不继承 Skills" not in contract:
+        fail("orchestration/contract.md missing the Coze no-skill-inheritance constraint (dispatch must inline the param card)")
+    if "日程" not in contract:
+        fail("orchestration/contract.md missing the Coze schedule-trigger path (template E monitoring)")
+    contract_lines = contract.count("\n") + 1
+    if contract_lines > 150:
+        fail(f"orchestration/contract.md exceeds 150 lines ({contract_lines}) — keep it a thin contract, not another SOP")
+    if "orchestration/contract.md" not in lead:
+        fail("team-lead SOP must reference orchestration/contract.md as the first startup step (audit M2)")
 
 # --- report -----------------------------------------------------------------
 if errors:

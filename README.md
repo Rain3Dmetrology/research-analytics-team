@@ -36,11 +36,11 @@
 - `agents/` — 5 role agents (team-lead + 4 members)
 - `avatars/` — member icons (256×256, ≤18 KB each)
 - `portable/SKILL.md` — cross-platform asset-routing annex
-- `orchestration/` — (planned v0.4.0) platform-agnostic orchestration contract
+- `orchestration/contract.md` — platform-agnostic orchestration contract (3 verbs × 3 platforms)
 - `.github/workflows/consistency-gate.yml` — CI single-source-of-truth gate
 - `CHANGELOG.md`, `LICENSE`
 
-### CI gate — 8 consistency checks
+### CI gate — 9 consistency checks
 1. version parity (plugin.json == portable == CHANGELOG)
 2. dmr requires-pin present in three places
 3. no bare-github dead links in README
@@ -49,12 +49,14 @@
 6. robustness regression guards (lead tokens + member checkpoints, no magic numbers)
 7. annex demotion + connector-registry guards (portable stays an annex; connector usage routed to dmr `references/data-sources.md`)
 8. README drift guard (three-layer positioning, templates A–E, CI count matches)
+9. orchestration contract guard (contract.md exists, 3 verbs × 3 platforms, ≤150 lines, referenced by team-lead)
 
 ### History & roadmap
+- **0.4.0** — orchestration contract layer: 3 platform-agnostic verbs (`assemble` / `dispatch` / `collect`) with a 3-platform adapter table (WorkBuddy / Coze / single-thread), incl. Coze no-skill-inheritance (inline param cards) and schedule-trigger monitoring; CI check 9.
 - **0.3.0** — coze-audit batch: three-layer README alignment + drift guard, fast-mode single-thread rule, honest budget counting, adversarial-audit floor, connector-registry routing, avatar slimming.
 - **0.2.1** — portable demoted to asset-routing annex (A1); all 25 audit findings closed.
 - **0.2.0** — budget governor, two-phase source pool, member checkpoints, run-manifest, externalized adversarial audit.
-- Roadmap: v0.4.0 orchestration contract layer (platform-agnostic verbs); v0.5.0 primitive downshift into the contract.
+- Roadmap: v0.5.0 primitive downshift — agents' platform verbs replaced by contract-verb references.
 
 ### Acknowledgments
 - Credibility core inherited from [deep-market-research](https://github.com/Rain3Dmetrology/deep-market-research) (dmr); engineering-robustness mechanisms inspired by `gpt-researcher-team` (timeout / fallback / notification / source-pool / multi-dimensional review).
@@ -95,11 +97,11 @@
 - `agents/` — 5 个角色 agent（主理人 + 4 成员）
 - `avatars/` — 成员图标（256×256，单张 ≤18KB）
 - `portable/SKILL.md` — 跨平台资产路由 annex
-- `orchestration/` —（规划中 v0.4.0）平台无关编排契约
+- `orchestration/contract.md` — 平台无关编排契约（3 动词 × 3 平台）
 - `.github/workflows/consistency-gate.yml` — CI 单一事实源一致性门禁
 - `CHANGELOG.md`、`LICENSE`
 
-### CI 门禁 — 8 项一致性检查
+### CI 门禁 — 9 项一致性检查
 1. 版本对齐（plugin.json == portable == CHANGELOG）
 2. dmr requires-pin 三处在位
 3. README 无裸 github 死链
@@ -108,12 +110,14 @@
 6. 健壮性机制回归守卫（主理人 token + 成员 checkpoint，无魔法数字）
 7. annex 降维 + 连接器注册表守卫（portable 保持 annex 定位；连接器用法路由到 dmr `references/data-sources.md`）
 8. README 漂移守卫（三层定位、模板 A–E、CI 项数一致）
+9. 编排契约守卫（contract.md 存在、3 动词 × 3 平台、≤150 行、被 team-lead 引用）
 
 ### 版本历史与路线图
+- **0.4.0** — 编排契约层：3 个平台无关动词（`assemble` 组队 / `dispatch` 派单 / `collect` 收编）+ 3 平台适配表（WorkBuddy / Coze / 单线程），含 Coze 子会话不继承 Skills（参数卡内联）与日程周期触发监测；CI check 9。
 - **0.3.0** — coze 审计批次：三层定位 README 对齐 + 漂移守卫、快版单线程铁律、预算器计数口径、对抗审计最低标准、连接器注册表路由、avatar 瘦身。
 - **0.2.1** — portable 降维为资产路由 annex（A1）；25 项审计发现全部关闭。
 - **0.2.0** — 预算器、两段式来源池、成员 checkpoint、run-manifest、对抗审计外部化。
-- 路线图：v0.4.0 编排契约层（平台无关动词）；v0.5.0 原语下沉至契约。
+- 路线图：v0.5.0 原语下沉——agents 正文平台动词替换为契约动词引用。
 
 ### 致谢
 - 可信度内核继承自 [deep-market-research](https://github.com/Rain3Dmetrology/deep-market-research)（dmr）；工程健壮性机制借鉴 `gpt-researcher-team` 的超时/兜底/通报/来源池与多维审稿思路。

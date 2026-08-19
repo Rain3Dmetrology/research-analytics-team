@@ -1,3 +1,13 @@
+## [0.4.0] - 2026-08-20
+
+Contract layer (audit M2, R2-A): orchestration primitives de-coupled from any single platform — pure additive change, agent bodies untouched.
+
+### Added
+- **`orchestration/contract.md` — platform-agnostic orchestration contract**: 3 contract verbs (`assemble` 组队 / `dispatch` 派单 / `collect` 收编) with semantics, pre/post-conditions, and iron rules; a 3-platform adapter table (WorkBuddy / Coze / single-thread); failure-and-degradation adapters; Coze-specific constraints.
+- **Coze constraints codified**: sub-sessions do not inherit Skills → `dispatch` must inline the full param card (role digest + task card + dmr adjudication essentials) into the sub-session prompt; schedule triggers drive template-E monitoring increments (no full rewrites, aligned with dmr v2.4.0).
+- **CI check 9 — orchestration contract guard**: contract.md must exist, define all 3 verbs, carry the 3-platform table with the Coze no-skill-inheritance constraint and schedule-trigger path, stay ≤150 lines (thin contract, not another SOP), and be referenced by team-lead.
+- **team-lead step 0**: "启动第一步读适配表" — the lead reads the adapter table before Phase 1 to resolve the current platform's verb mapping; platform syntax in the SOP body is explicitly scoped as the WorkBuddy adaptation.
+
 ## [0.3.0] - 2026-08-20
 
 Coze cross-audit batch: resolves 8 coze findings (M1 / M3 / V1 / V2 / V4 / D1 / D2 / D5) + asset slimming (D4). Positioning and mechanism drift is now CI-enforced, not promised.
