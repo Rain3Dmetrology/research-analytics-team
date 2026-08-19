@@ -11,14 +11,15 @@ compatibility: >
   research-analytics-team 专家包在「无 Team 编排」时的等价单会话实现；
   平台专属能力（Connector/MCP/automation/Skill 调用）按平台可用性尽力启用，缺失则回退默认层（内置搜索 + 免费 API）。
 metadata:
-  version: "0.1.1"
+  version: "0.1.2"
   author: "Rain / WorkBuddy"
   source_of_truth: "research-analytics-team-team-lead.md（团队 SOP 为权威）"
+  requires: "deep-market-research >=2.3.4 <3"
 ---
 
 # Research Orchestrator — 调研编排组合技能（便携版 / 跨平台）
 
-> 版本 0.1.0 ｜ 定位：**编排层**，不是新调研内核。
+> 版本 0.1.2 ｜ 定位：**编排层**，不是新调研内核。
 > 本文件是 `research-analytics-team` 专家包在「无 Team 编排」时的**等价单会话实现**；团队 SOP（`research-analytics-team-team-lead.md`）为唯一事实源，二者描述必须一致、不得漂移。
 > 跨平台：WorkBuddy 直接可用；Trae / Cursor / CodeBuddy 等 Markdown 技能平台可加载本文件，平台专属能力（Connector/MCP/automation/Skill）按可用性尽力启用，缺失回退默认层（内置搜索 + 免费 API）。
 
