@@ -1,3 +1,16 @@
+## [0.2.1] - 2026-08-19
+
+Audit follow-up batch: resolves remaining findings A1 / A5 + CI modernization. Closes all 25 findings from the dmr-RAT 2026 audit (A1 here; C8/D3/D4 resolved on the dmr side as v2.4.0).
+
+### Changed
+- **A1 — portable demoted to platform-asset-routing annex**: `portable/SKILL.md` no longer claims to be the "equivalent single-session implementation" and no longer owns research-intent routing. Trigger words (调研/竞品/尽调/扒一下/挖一下/对标/对位/市场测算) are explicitly ceded to dmr §七; the annex mounts only via (a) explicit dmr Step-1 reference or (b) explicit user request for asset routing / connector mapping / parallel-collection orchestration. Intent-routing rows removed from its routing table (now a dmr-demand-driven asset table); source_of_truth split explicitly (dmr owns research SOP, team-lead owns team orchestration). team-lead intro and robustness preamble updated to match.
+- **A5 residual — template de-duplication in agents**: industry-competitor-researcher no longer re-states template B five-section / template C four-dimension internals; both now reference dmr `references/templates.md` B/C as the single authority (quote-don't-copy), plus lens library pointer to `references/optional-modules.md`.
+- **Template E alignment**: Step-0 routing gains the monitoring-increment path (周报/月报/持续监测 with prior snapshot → template E, delta-only, no full rewrite), matching dmr v2.4.0.
+- CI: actions/checkout@v5 + actions/setup-python@v6 (clears Node-20 deprecation warnings).
+
+### Added
+- **CI gate check 7 (annex-demotion guard)**: fails if portable drops its demotion declaration, its no-intent-routing pledge, or its mounting/asset-table section, or if team-lead drops the annex-demotion statement — A1's resolution is now enforced, not promised.
+
 ## [0.2.0] - 2026-08-19
 
 Audit P1 batch: engineering-robustness mechanisms promoted from prose promises to enforced SOP + CI guards. Resolves findings B3 / C1 / C2 / A2 / A3 / A4 / B2 / B4 / B5 / B6 / C4 / C5 / C7 / C9 / D1 / D2 from the dmr-RAT 2026 audit.
