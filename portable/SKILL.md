@@ -11,7 +11,7 @@ compatibility: >
   research-analytics-team 专家包在「无 Team 编排」时的等价单会话实现；
   平台专属能力（Connector/MCP/automation/Skill 调用）按平台可用性尽力启用，缺失则回退默认层（内置搜索 + 免费 API）。
 metadata:
-  version: "0.1.0"
+  version: "0.1.1"
   author: "Rain / WorkBuddy"
   source_of_truth: "research-analytics-team-team-lead.md（团队 SOP 为权威）"
 ---
