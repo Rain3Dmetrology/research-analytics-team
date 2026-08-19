@@ -12,7 +12,7 @@ compatibility: >
   由 dmr Step 1 显式挂载，不再自称单会话等价实现）；
   平台专属能力（Connector/MCP/automation/Skill 调用）按平台可用性尽力启用，缺失则回退默认层（内置搜索 + 免费 API）。
 metadata:
-  version: "0.5.0"
+  version: "0.6.0"
   author: "Rain / WorkBuddy"
   source_of_truth: "deep-market-research SKILL.md（调研 SOP 权威）+ research-analytics-team-team-lead.md（团队编排权威）"
   requires: "deep-market-research >=2.3.4 <3"
@@ -20,7 +20,7 @@ metadata:
 
 # Research Orchestrator — 平台资产路由 Annex（便携版 / 跨平台）
 
-> 版本 0.5.0 ｜ 定位：**dmr 的采集素材增强附件（annex）**——不是调研内核，也不是单会话等价实现。
+> 版本 0.6.0 ｜ 定位：**dmr 的采集素材增强附件（annex）**——不是调研内核，也不是单会话等价实现。
 > **意图路由与调研 SOP 的唯一权威是 deep-market-research（dmr）**；本 annex 仅在 dmr 流水线需要平台资产（L3/L4/L5）或并行采集编排时被挂载。团队编排形态的权威是 `research-analytics-team-team-lead.md`。
 > 跨平台：WorkBuddy 直接可用；Trae / Cursor / CodeBuddy 等 Markdown 技能平台可加载本文件，平台专属能力（Connector/MCP/automation/Skill）按可用性尽力启用，缺失回退默认层（内置搜索 + 免费 API）。
 
@@ -105,7 +105,7 @@ dmr 的置信标签（Confirmed/Corroborated/Single-source/Unverified）、矛�
 ## 五、工程健壮性（与团队 SOP 一致）
 
 - **全局预算器（先于一切采集）**：总墙钟 SLA（标准 ≤30 min / 快版 ≤10 min）+ 总搜索封顶（≤60 次，各并行路 ≤15）；每阶段通报附「预算消耗」；80% 预警「停止扩源、整理回传」，100% 冻结新采集按降级表交付骨架并在方法论声明披露「预算截断」。
-- **超时降级 + checkpoint 义务**：任一并行采集任务接近 maxTurns（剩余 ≤20%）或收到预算预警 → 立即停止新采集，回传「部分但结构化」产物（标 `Unverified` / 未完成维度 / 未覆盖 / 降级图），不得悬停、不得静默退出、不得丢弃已采集证据；编排者立即采用降级产物进入下一阶段。
+- **超时降级 + checkpoint 义务**：任一并行采集任务接近 maxTurns（剩余 ≤20%）或收到预算预警 → 立即停止新采集，回传「部分但结构化」产物（标 `Unverified` / 未完成维度 / 未覆盖 / 降级图），不得悬停、不得静默退出、不得丢弃已采集证据；checkpoint 回传即执行快照。成员超时/无响应 → **不立即重试、禁止整批重跑**：先标「**待接管**」，编排者三分支裁决（①清理重跑：单成员重发任务卡，已回写来源池证据保留、重跑消耗**全局余量**不追加总封顶、≤1 次；②人工接手：走介入窗口披露快照与缺口；③接受降级：采用降级产物进下一阶段并披露），语义以 `orchestration/contract.md` 暂停线节为准。
 - **失败兜底**：调度失败重试 1 次否则降级 dmr 单线程（至少 Step1+Step4+Step8）；来源不足如实标 `Unverified`/`未覆盖` 不编造；连接器未连条件式跳过。
 - **介入窗口**：每阶段进度通报后显式询问用户「继续 / 转向 / 补充信源」（快版免询问）；中途追加信源 → 写入来源池触发局部重算，不整轮重跑。
 - **进度通报**：每阶段结束通报（已完成/进行中/已确认结论/预算消耗/风险降级/下一步）；终稿含**质量双轴**——评分卡（dmr 100 分制）+ 置信分布占比——与最大不确定性 1 条；方法论声明固定含**裁决路径**（多路终裁 / 单线程自裁）与降级未执行项。

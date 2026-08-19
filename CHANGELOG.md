@@ -1,3 +1,16 @@
+## [0.6.0] - 2026-08-20
+
+Pause-line / pending-takeover semantics (R3, multi-agent stop-resume engineering): member timeout no longer jumps straight to degradation — the run now has an explicit recovery plane (snapshot → pending-takeover → 3-branch adjudication) to pair with the existing stop plane (budget freeze / checkpoints / degradation disclosure).
+
+### Added
+- **contract.md pause-line section**: on member timeout / no-response — freeze the task (no immediate retry, batch rerun forbidden), snapshot first (budget spent + source-pool increments + items produced + unfinished list, piggybacked on the member checkpoint return), mark **pending-takeover (待接管)**, then the lead adjudicates exactly one of 3 branches: ① clean rerun (re-dispatch the same task card; pool evidence kept — the rerunner consumes from the pool, no re-fetching; rerun spends the **global slack only**, never raising the search cap, never re-allocating shares; ≤1 rerun per member) ② human takeover (via the intervention window, snapshot + gap disclosed) ③ accept degradation (per the existing failure/degradation table, gap into open questions). The `collect` iron rule now routes timeout through pending-takeover instead of straight degradation.
+- **CI check 10 — pause-line guard**: contract.md must keep 待接管 + the 3 adjudication branches (清理重跑 / 人工接手 / 接受降级) + the rerun-budget rule (全局余量); team-lead and portable must stay in sync (待接管 + 全局余量 tokens in all three).
+
+### Changed
+- **team-lead SOP**: the "no full-retry on timeout" clause upgraded to the pause-line clause — checkpoint returns now double as execution snapshots; timeout goes through the 3-branch adjudication instead of jumping to the degraded product; fast-mode / no-confirm paths go straight to branch ③.
+- **portable/SKILL.md**: the timeout-degradation bullet extended with the same pending-takeover adjudication, semantics deferred to contract.md.
+- **README**: CI gate 9 → 10 checks (EN + CN), version history entry added; plugin.json description now lists the pause-line takeover mechanism.
+
 ## [0.5.0] - 2026-08-20
 
 Primitive downshift (audit M2, R2-B): platform verbs leave the agent bodies — orchestration now speaks contract verbs only; platform syntax lives exclusively in `orchestration/contract.md`.

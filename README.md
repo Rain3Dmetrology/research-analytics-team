@@ -40,7 +40,7 @@
 - `.github/workflows/consistency-gate.yml` — CI single-source-of-truth gate
 - `CHANGELOG.md`, `LICENSE`
 
-### CI gate — 9 consistency checks
+### CI gate — 10 consistency checks
 1. version parity (plugin.json == portable == CHANGELOG)
 2. dmr requires-pin present in three places
 3. no bare-github dead links in README
@@ -50,8 +50,10 @@
 7. annex demotion + connector-registry guards (portable stays an annex; connector usage routed to dmr `references/data-sources.md`)
 8. README drift + primitive-ban guards (three-layer positioning, templates A–E, CI count matches; platform verbs banned outside contract.md)
 9. orchestration contract guard (contract.md exists, 3 verbs × 3 platforms, ≤150 lines, referenced by team-lead)
+10. pause-line guard (timeout → snapshot → pending-takeover, 3-branch adjudication; rerun spends the global slack, never raises the cap)
 
 ### History & roadmap
+- **0.6.0** — pause-line / pending-takeover semantics: member timeout no longer jumps straight to degradation — snapshot first (piggybacked on checkpoints), mark pending-takeover, then a 3-branch adjudication (clean rerun / human takeover via the intervention window / accept degradation); batch rerun forbidden; rerun budget = global slack only.
 - **0.5.0** — primitive downshift: all platform-specific orchestration verbs removed from agent bodies, portable, and README; agents now speak contract verbs only; WorkBuddy parameter details live in contract.md; CI primitive-ban guard.
 - **0.4.0** — orchestration contract layer: 3 platform-agnostic verbs (`assemble` / `dispatch` / `collect`) with a 3-platform adapter table (WorkBuddy / Coze / single-thread), incl. Coze no-skill-inheritance (inline param cards) and schedule-trigger monitoring; CI check 9.
 - **0.3.0** — coze-audit batch: three-layer README alignment + drift guard, fast-mode single-thread rule, honest budget counting, adversarial-audit floor, connector-registry routing, avatar slimming.
@@ -102,7 +104,7 @@
 - `.github/workflows/consistency-gate.yml` — CI 单一事实源一致性门禁
 - `CHANGELOG.md`、`LICENSE`
 
-### CI 门禁 — 9 项一致性检查
+### CI 门禁 — 10 项一致性检查
 1. 版本对齐（plugin.json == portable == CHANGELOG）
 2. dmr requires-pin 三处在位
 3. README 无裸 github 死链
@@ -112,8 +114,10 @@
 7. annex 降维 + 连接器注册表守卫（portable 保持 annex 定位；连接器用法路由到 dmr `references/data-sources.md`）
 8. README 漂移 + 原语清零守卫（三层定位、模板 A–E、CI 项数一致；平台动词仅允许出现在 contract.md）
 9. 编排契约守卫（contract.md 存在、3 动词 × 3 平台、≤150 行、被 team-lead 引用）
+10. 暂停线守卫（超时 → 快照 → 待接管 → 三分支裁决；重跑只花全局余量、永不追加封顶）
 
 ### 版本历史与路线图
+- **0.6.0** — 暂停线 / 待接管语义：成员超时不再直跳降级——先落执行快照（挂 checkpoint 回传）、标「待接管」，再由主理人三分支裁决（清理重跑 / 人工接手走介入窗口 / 接受降级）；禁止整批重跑；重跑预算只取全局余量。
 - **0.5.0** — 原语下沉：agents 正文、portable、README 中的平台专属编排动词全部清零，agents 只说契约动词；WorkBuddy 参数细则收编入 contract.md；CI 原语清零守卫。
 - **0.4.0** — 编排契约层：3 个平台无关动词（`assemble` 组队 / `dispatch` 派单 / `collect` 收编）+ 3 平台适配表（WorkBuddy / Coze / 单线程），含 Coze 子会话不继承 Skills（参数卡内联）与日程周期触发监测；CI check 9。
 - **0.3.0** — coze 审计批次：三层定位 README 对齐 + 漂移守卫、快版单线程铁律、预算器计数口径、对抗审计最低标准、连接器注册表路由、avatar 瘦身。

@@ -25,6 +25,11 @@ Fails the build when any of these drift:
      carries the 3-platform adapter table (WorkBuddy / Coze / single-thread)
      with the Coze no-skill-inheritance constraint, stays <= 150 lines, and
      is referenced by the team-lead SOP
+ 10. pause-line guard (R3): contract.md must keep the pause-line /
+     pending-takeover semantics (待接管 + 3 adjudication branches: 清理重跑 /
+     人工接手 / 接受降级) and the rerun-budget rule (全局余量, never raising
+     the search cap); team-lead SOP and portable must stay in sync (待接管 +
+     全局余量 tokens in all three)
 """
 import json
 import re
@@ -141,7 +146,7 @@ threshold_count = lead.count(THRESHOLD_TOKEN)
 if threshold_count != 1:
     fail(f"team-lead must define the cross-validation threshold exactly once (audit D1), found {threshold_count} occurrences of {THRESHOLD_TOKEN!r}")
 
-PORTABLE_GUARDS = ["资产路由", "全局预算器", "分域预分配", "run-manifest", "裁决路径"]
+PORTABLE_GUARDS = ["资产路由", "全局预算器", "分域预分配", "run-manifest", "裁决路径", "待接管"]
 for token in PORTABLE_GUARDS:
     if token not in portable:
         fail(f"portable/SKILL.md out of sync with team-lead SOP (missing token: {token!r})")
@@ -165,7 +170,7 @@ if REGISTRY_REF not in portable:
     fail(f"portable/SKILL.md must route connector usage to the dmr registry ({REGISTRY_REF}) as the single source of truth (audit V2)")
 
 # --- 8. README drift guard (audit M1) ----------------------------------------
-CHECK_COUNT = 9
+CHECK_COUNT = 10
 README_FORBIDDEN = [
     "two form factors",  # v0.2.1+ is three-layer positioning; portable is an annex, not an equal form
     "两种形态",            # CN mirror of the same drift
@@ -218,6 +223,23 @@ else:
         fail(f"orchestration/contract.md exceeds 150 lines ({contract_lines}) — keep it a thin contract, not another SOP")
     if "orchestration/contract.md" not in lead:
         fail("team-lead SOP must reference orchestration/contract.md as the first startup step (audit M2)")
+
+# --- 10. pause-line / pending-takeover guard (R3) ------------------------------
+if contract_path.exists():
+    contract_text = contract_path.read_text(encoding="utf-8")
+    for token in ("待接管", "清理重跑", "人工接手", "接受降级", "全局余量"):
+        if token not in contract_text:
+            fail(f"orchestration/contract.md pause-line guard (R3): missing token {token!r}")
+else:
+    fail("orchestration/contract.md missing — pause-line semantics cannot be verified (R3)")
+
+for token in ("待接管", "清理重跑", "全局余量"):
+    if token not in lead:
+        fail(f"team-lead SOP pause-line guard (R3): missing token {token!r}")
+
+for token in ("待接管", "全局余量"):
+    if token not in portable:
+        fail(f"portable/SKILL.md pause-line guard (R3): missing token {token!r}")
 
 # --- report -----------------------------------------------------------------
 if errors:
