@@ -1,0 +1,90 @@
+{
+  "name": "research-analytics-team",
+  "version": "0.1.0",
+  "description": "Integrated research-analytics expert team: dmr credibility core (T1-T4 source grading, >=2/3-source cross-validation, templates B/C) + WorkBuddy connectors (patsnap/westock/github/canva, tyc-mcp if connected) + Team orchestration. Absorbs Coze research-skill strengths, fixes defects, anti-bloat.",
+  "author": {
+    "name": "Rain / WorkBuddy",
+    "email": "rain3dmetrology@outlook.com"
+  },
+  "agents": [
+    "./agents/research-analytics-team-team-lead.md",
+    "./agents/industry-competitor-researcher.md",
+    "./agents/data-analyst.md",
+    "./agents/data-sourcer.md",
+    "./agents/visualizer.md"
+  ],
+
+  "expertType": "team",
+  "agentName": "research-analytics-team-team-lead",
+  "teamInfo": {
+    "leadAgent": "research-analytics-team-team-lead",
+    "memberAgents": ["industry-competitor-researcher", "data-analyst", "data-sourcer", "visualizer"]
+  },
+
+  "displayName": {
+    "en": "Research & Analytics Team",
+    "zh": "调研分析专家团队"
+  },
+  "profession": {
+    "en": "Research & Analytics Team",
+    "zh": "调研分析专家团队"
+  },
+  "displayDescription": {
+    "en": "End-to-end market/competitor/industry research delivering source-graded, cross-validated, confidence-labeled, reproducible reports.",
+    "zh": "集大成调研分析团队：以源分级与交叉验证为内核，交付带置信度、可复现的行业/竞品/市场深度报告。"
+  },
+  "avatar": "avatars/team.png",
+  "categoryId": "12-IndustryConsultant",
+  "defaultInitPrompt": {
+    "zh": "调研 [行业/赛道] 的竞争格局、产业链与 1-2 年趋势，并给出商业化避坑建议",
+    "en": "Research the competitive landscape, value chain, and 1-2 year trends of [industry/track], with commercialization pitfalls."
+  },
+  "plugin": "research-analytics-team",
+  "tags": [
+    { "en": "Market Research", "zh": "市场调研" },
+    { "en": "Competitor Analysis", "zh": "竞品分析" },
+    { "en": "Industry Landscape", "zh": "行业格局" }
+  ],
+  "quickPrompts": [
+    { "en": "Research the competitive landscape, value chain, and 1-2 year trends of [industry/track], with commercialization pitfalls.", "zh": "调研 [行业/赛道] 的竞争格局、产业链与 1-2 年趋势，并给出商业化避坑建议" },
+    { "en": "Deep due-diligence on [Company A] vs [Competitors B/C] (4-dimension + SWOT + scenarios).", "zh": "对 [公司A] vs [竞品B/C] 做竞品深度尽调（四维+SWOT+情景）" },
+    { "en": "Dig into the real user sentiment, negatives and risk signals of [product/tech].", "zh": "扒一下 [产品/技术] 的真实用户口碑、负面与风险信号" }
+  ],
+  "members": [
+    {
+      "id": "research-analytics-team-team-lead",
+      "displayName": { "en": "Fu Hengzhi", "zh": "傅衡之" },
+      "profession": { "en": "Research Editor", "zh": "研究主编" },
+      "avatar": "avatars/research-analytics-team-team-lead.png",
+      "role": "lead"
+    },
+    {
+      "id": "industry-competitor-researcher",
+      "displayName": { "en": "Zhen Shixi", "zh": "甄势析" },
+      "profession": { "en": "Industry & Competitor Analyst", "zh": "行业竞品研究员" },
+      "avatar": "avatars/industry-competitor-researcher.png",
+      "role": "member"
+    },
+    {
+      "id": "data-analyst",
+      "displayName": { "en": "Ji Xiangshi", "zh": "计详实" },
+      "profession": { "en": "Data Analyst", "zh": "数据论证师" },
+      "avatar": "avatars/data-analyst.png",
+      "role": "member"
+    },
+    {
+      "id": "data-sourcer",
+      "displayName": { "en": "Suo Yuanzhen", "zh": "索源真" },
+      "profession": { "en": "Data Sourcing Specialist", "zh": "专业取数师" },
+      "avatar": "avatars/data-sourcer.png",
+      "role": "member"
+    },
+    {
+      "id": "visualizer",
+      "displayName": { "en": "Tu Ximing", "zh": "图析明" },
+      "profession": { "en": "Visualization Designer", "zh": "可视化设计师" },
+      "avatar": "avatars/visualizer.png",
+      "role": "member"
+    }
+  ]
+}

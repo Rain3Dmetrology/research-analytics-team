@@ -1,0 +1,17 @@
+# Secrets / credentials
+.env
+*.key
+credentials*
+*secret*
+*.local.*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
