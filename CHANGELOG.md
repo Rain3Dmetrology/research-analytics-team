@@ -1,3 +1,14 @@
+## [0.6.1] - 2026-08-20
+
+一致性修复：消除与 dmr v2.5.0 的参数卡字段漂移 + 内部命名不一致。
+
+### Fixed
+- 研究参数卡「已收集来源池」池条目格式统一为 `实体 | 域 | 源URL | 层级 | 日期 | 置信`：修正内部 `层级Tier` 英文污染与 `URL`/`源URL` 术语不一致；明确 `域` 为团队采集分域（D1/D2/D3）编排扩展，dmr schema 基础 5 字段（实体/源URL/层级/日期/置信）以 `references/parameter-card-schema.md` 为唯一权威。
+- 团队《研究参数卡》字段定义指针由 dmr 旧版「8 字段表」改为指向 dmr v2.5.0 结构化 schema（消除跨组件字段定义漂移）。
+
+### Changed
+- dmr `requires` 约束由 `>=2.3.4 <3` 收紧为 `>=2.5.0 <3`（团队现依赖 dmr v2.5.0 参数卡 schema 单一权威）。
+
 ## [0.6.0] - 2026-08-20
 
 Pause-line / pending-takeover semantics (R3, multi-agent stop-resume engineering): member timeout no longer jumps straight to degradation — the run now has an explicit recovery plane (snapshot → pending-takeover → 3-branch adjudication) to pair with the existing stop plane (budget freeze / checkpoints / degradation disclosure).
