@@ -278,6 +278,10 @@ README_REQUIRED = [
     "annex",        # three-layer positioning must keep the annex wording
     "A–E",          # dmr templates A-E, not B/C only
     "不响应调研",    # portable documented as non-trigger
+    "待接管",        # 0.6.0 pause-line/takeover semantics must stay documented
+    "credit",       # 0.7.0 gateway-credit budget track must stay documented
+    "验收标准",      # 0.7.0 acceptance-first (aligned with dmr Step 0) must stay documented
+    "域独立性",      # 0.7.0 same-domain-source cap (Corroborated, not Confirmed) must stay documented
 ]
 for token in README_FORBIDDEN:
     if token in readme:

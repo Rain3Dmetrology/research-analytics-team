@@ -1,3 +1,14 @@
+## [0.7.1] - 2026-08-22
+
+README 门面同步 + 检查 8 机制 token 守卫（SOP 内核零变化）。
+
+### Fixed
+- 中英 README 工程健壮性小节去除 stale 版本标签（v0.3.0），机制清单补齐：验收先行 / credit 双口径 / 域独立性裁决门 / 暂停线·待接管——与 0.6.0/0.7.0 实际交付对齐。
+- 中英 README Files 节补列 settings.json。
+
+### Added
+- 检查 8 README_REQUIRED 扩展 4 枚机制 token（待接管 / credit / 验收标准 / 域独立性）——README 缺任一机制描述即 CI FAIL，堵住「机制已交付、README 未记载」的漂移通道。
+
 ## [0.7.0] - 2026-08-22
 
 P1 批（全局最优 spec v1.2 · S1c + S2 + S3 + S4 + S7）：验收先行 + 六域路由 + 域独立性裁决 + credit 双口径 + 红线 CI 门禁。

@@ -23,13 +23,16 @@
 - **Fast mode**: single-threaded by default — the lead runs dmr Step 1/4/8 directly (≤10 min SLA), skipping team assembly (`assemble`/`dispatch`) unless a team is explicitly requested.
 - **Portable annex**: never auto-triggers on research words. Ask explicitly for asset routing / connector mapping / parallel collection, or let dmr Step 1 mount it.
 
-### Engineering robustness (v0.3.0)
-- **Budget governor**: wall-clock SLA (std ≤30 min / fast ≤10 min) + search cap ≤60 with an honest counting clause (hard limit vs self-count, disclosed in the run manifest), 80% early warning / 100% freeze → degraded delivery.
+### Engineering robustness
+- **Acceptance-first**: before `dispatch` the lead produces acceptance criteria (each with a measurable anchor) + three-state termination conditions (criteria met / budget exhausted / max N rounds), confirmed by the user in one round — aligned with dmr Step 0.
+- **Budget governor**: wall-clock SLA (std ≤30 min / fast ≤10 min) + search cap ≤60 with an honest counting clause (hard limit vs self-count, disclosed in the run manifest), 80% early warning / 100% freeze → degraded delivery; gateway (AgentEarth etc., if connected) calls tracked on a credit track (calls × 0.5 credit each, soft warning line 30).
 - **Two-phase source pool**: Phase-1 domain pre-allocation (academic / Chinese UGC / quantitative — one owner per entity×domain) kills duplicate collection; Phase-2 merge adjudication is the only evidence entry.
+- **Domain-independence adjudication gate**: every candidate `Confirmed` conclusion gets its supporting sources tagged by collection domain (D1–D6); a same-domain source pair caps the label at `Corroborated`.
 - **run-manifest.json** per run: query, param card, final source pool, adjudication decisions, component versions, budget consumption, degradation events.
 - **Adversarial audit floor**: role-swapped critics (external model, or a declared "opposing reviewer" on same-model fallback), each producing a ≥3-item counter-evidence list that must land in the contradiction ledger.
 - **Three QC layers, non-interchangeable**: 6-dimension gate (coverage) / adversarial audit (counter-evidence) / lint (format & citations) — missing any layer must be disclosed.
 - **Member checkpoint obligations**: at ≤20% remaining turns (per each agent's own frontmatter maxTurns) or budget warning — stop collecting, return a structured digest.
+- **Pause-line / pending-takeover**: a timed-out member freezes a snapshot (budget used, source increments, done/pending) and is marked pending-takeover; the lead then adjudicates among clean rerun (global slack only) / manual takeover / accept degradation.
 
 ### Files
 - `.codebuddy-plugin/plugin.json` — package manifest (incl. `requires: deep-market-research >=2.6.0 <3` version pin)
@@ -37,6 +40,7 @@
 - `avatars/` — member icons (256×256, ≤18 KB each)
 - `portable/SKILL.md` — cross-platform asset-routing annex
 - `orchestration/contract.md` — platform-agnostic orchestration contract (3 verbs × 3 platforms)
+- `settings.json` — runtime defaults (language, fallbacks)
 - `.github/workflows/consistency-gate.yml` — CI single-source-of-truth gate
 - `CHANGELOG.md`, `LICENSE`
 
@@ -94,13 +98,16 @@
 - **快版**：默认单线程——主编直跑 dmr Step 1/4/8（SLA ≤10 分钟），免 `assemble`/`dispatch`；仅用户显式要求时才启用团队形态。
 - **Portable annex**：绝不因调研词自动触发。需明确点名资产路由 / 连接器映射 / 并行采集，或由 dmr Step 1 挂载。
 
-### 工程健壮性（v0.3.0）
-- **全局预算器**：墙钟 SLA（标准版 ≤30 分钟 / 快版 ≤10 分钟）+ 搜索封顶 ≤60 次，附计数口径诚实条款（硬限 / 自计数，记入 run-manifest），80% 预警 / 100% 冻结 → 降级交付。
+### 工程健壮性
+- **验收先行**：`dispatch` 前主编产出验收标准（每条含度量锚点）＋ 终止条件三态（达标即停 / 预算耗尽即停 / 最多 N 轮），交用户 1 轮确认——与 dmr Step 0 产出行对齐。
+- **全局预算器**：墙钟 SLA（标准版 ≤30 分钟 / 快版 ≤10 分钟）+ 搜索封顶 ≤60 次，附计数口径诚实条款（硬限 / 自计数，记入 run-manifest），80% 预警 / 100% 冻结 → 降级交付；聚合网关（AgentEarth 等，若平台已连）调用另记 credit 口径（调用数 × 0.5 credit/次，软预警线 30）。
 - **两段式来源池**：Phase1 分域预分配（学术 / 中文 UGC / 测算——每实体×域唯一属主）杜绝重复采集；Phase2 合并裁决是唯一证据入口。
+- **域独立性裁决门**：候选 `Confirmed` 结论的支撑源逐一标注采集域（D1–D6）；存在同域源对时该结论最高标 `Corroborated`。
 - **run-manifest.json** 逐次归档：查询原文、参数卡、来源池终态、裁决决策、组件版本、预算消耗、降级事件。
 - **对抗审计最低标准**：换角色视角 critic（外部模型，或同模回退时声明「反方审稿人」），每类产出 ≥3 条反证清单，必须落入矛盾台账。
 - **三层质检不可互相替代**：6 维闸门（覆盖）/ 对抗审计（反向证据）/ lint（格式引用）——缺任一层必须披露。
 - **成员 checkpoint 义务**：剩余轮次 ≤20%（以各自 frontmatter maxTurns 为基数）或预算预警时——停止采集、回传结构化摘要。
+- **暂停线 / 待接管**：成员超时先落执行快照（已用预算、来源增量、完成/待办）并标「待接管」；主理人三分支裁决——清理重跑（只花全局余量）/ 人工接手 / 接受降级。
 
 ### 文件结构
 - `.codebuddy-plugin/plugin.json` — 包清单（含 `requires: deep-market-research >=2.6.0 <3` 版本 pin）
@@ -108,6 +115,7 @@
 - `avatars/` — 成员图标（256×256，单张 ≤18KB）
 - `portable/SKILL.md` — 跨平台资产路由 annex
 - `orchestration/contract.md` — 平台无关编排契约（3 动词 × 3 平台）
+- `settings.json` — 运行时默认值（语言、回退策略）
 - `.github/workflows/consistency-gate.yml` — CI 单一事实源一致性门禁
 - `CHANGELOG.md`、`LICENSE`
 
