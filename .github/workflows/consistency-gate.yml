@@ -16,3 +16,5 @@ jobs:
           python-version: "3.12"
       - name: Single-source-of-truth consistency gate
         run: python scripts/consistency_check.py
+      - name: Negative matrix self-test (red lines R1-R3)
+        run: python scripts/consistency_check.py --self-test

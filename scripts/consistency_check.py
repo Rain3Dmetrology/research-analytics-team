@@ -30,10 +30,27 @@ Fails the build when any of these drift:
      人工接手 / 接受降级) and the rerun-budget rule (全局余量, never raising
      the search cap); team-lead SOP and portable must stay in sync (待接管 +
      全局余量 tokens in all three)
+ 11. agent-roster freeze (red line R1): agents/ stays exactly the 5 fixed
+     role files — six-domain routing is a table, not extra headcount;
+     data-source-bound subagents are forbidden
+ 12. aggregation-gateway qualifier guard (red line R2): every
+     agentearth/agentkey mention in data-sourcer.md must carry a
+     conditional qualifier (若平台已连 / 已连才启用) within 200 chars —
+     gateways stay optional enhancement layers, never hardwired sources
+ 13. bounded revise-loop guard (red line R3): team-lead keeps the
+     "最多 2 轮修订" + "强制通过" termination tokens and carries no
+     unbounded-loop vocabulary
+
+`--self-test` runs the negative matrix: 3 injected violations, each must
+FAIL the gate (red lines ship with their negative tests).
 """
 import json
+import os
 import re
+import shutil
+import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -44,6 +61,88 @@ errors = []
 
 def fail(msg):
     errors.append(msg)
+
+
+# --- negative matrix (red lines R1-R3 ship with their negative tests) --------
+def _negative_case(name, mutate, expect):
+    """Inject a violation into a throwaway copy of the repo; the gate must FAIL."""
+    with tempfile.TemporaryDirectory(prefix="rat-gate-neg-") as tmp:
+        tree = Path(tmp) / "repo"
+        shutil.copytree(ROOT, tree, ignore=shutil.ignore_patterns(".git"))
+        mutate(tree)
+        env = {**os.environ, "PYTHONIOENCODING": "utf-8"}
+        proc = subprocess.run(
+            [sys.executable, str(tree / "scripts" / "consistency_check.py")],
+            capture_output=True, text=True, encoding="utf-8", errors="replace", env=env,
+        )
+        out = (proc.stdout or "") + (proc.stderr or "")
+        if proc.returncode == 0:
+            print(f"SELF-TEST FAILED [{name}]: gate PASSED although a violation was injected")
+            sys.exit(1)
+        if expect not in out:
+            print(f"SELF-TEST FAILED [{name}]: gate failed but without the expected message {expect!r}\n{out}")
+            sys.exit(1)
+        print(f"  negative case OK [{name}] -> gate failed as required")
+
+
+def _run_self_test():
+    print("SELF-TEST: negative matrix (3 injected violations must each FAIL the gate)")
+
+    def n11_inject_sixth_agent(tree):
+        # crafted to pass checks 4-partial/5/6/8 so the failure isolates check 11 (+4 parity)
+        (tree / "agents" / "data-sourcer-finance.md").write_text(
+            "---\n"
+            "name: data-sourcer-finance\n"
+            "description: Injected sixth member (negative test for agent-roster freeze).\n"
+            "maxTurns: 50\n"
+            "skills: [deep-market-research]\n"
+            "---\n\n"
+            "# 负向注入：第 6 个数据源绑定型成员\n\n"
+            "引用 deep-market-research 内核。\n\n"
+            "## maxTurns checkpoint 义务\n"
+            "- 剩余轮次不足时回传结构化摘要。\n",
+            encoding="utf-8",
+        )
+
+    def n12_inject_bare_gateway_mention(tree):
+        p = tree / "agents" / "data-sourcer.md"
+        txt = p.read_text(encoding="utf-8")
+        # append a bare gateway mention at EOF, far (>200 chars) from every
+        # qualifier — a faithful violation of the rule itself. (Deleting one
+        # qualifier is NOT: the file's qualifiers are dense enough that a
+        # neighbor still covers the mention within 200 chars.)
+        p.write_text(
+            txt + "\n\n## injected bare gateway mention (negative test)\n\n"
+                  "AgentEarth direct access and agentkey direct access configuration.\n",
+            encoding="utf-8",
+        )
+
+    def n13_drop_forced_pass_token(tree):
+        p = tree / "agents" / "research-analytics-team-team-lead.md"
+        txt = p.read_text(encoding="utf-8")
+        p.write_text(txt.replace("强制通过", "通过"), encoding="utf-8")
+
+    _negative_case(
+        "check 11 / R1: 6th data-source-bound agent file injected",
+        n11_inject_sixth_agent,
+        "agent-roster freeze",
+    )
+    _negative_case(
+        "check 12 / R2: bare gateway mention injected without a qualifier",
+        n12_inject_bare_gateway_mention,
+        "aggregation-gateway qualifier guard",
+    )
+    _negative_case(
+        "check 13 / R3: 强制通过 termination token dropped from team-lead",
+        n13_drop_forced_pass_token,
+        "bounded revise-loop guard",
+    )
+    print("SELF-TEST PASSED: 3 negative injections all failed the gate as required")
+
+
+if "--self-test" in sys.argv[1:]:
+    _run_self_test()
+    sys.exit(0)
 
 
 # --- load artifacts ---------------------------------------------------------
@@ -170,7 +269,7 @@ if REGISTRY_REF not in portable:
     fail(f"portable/SKILL.md must route connector usage to the dmr registry ({REGISTRY_REF}) as the single source of truth (audit V2)")
 
 # --- 8. README drift guard (audit M1) ----------------------------------------
-CHECK_COUNT = 10
+CHECK_COUNT = 13
 README_FORBIDDEN = [
     "two form factors",  # v0.2.1+ is three-layer positioning; portable is an annex, not an equal form
     "两种形态",            # CN mirror of the same drift
@@ -240,6 +339,46 @@ for token in ("待接管", "清理重跑", "全局余量"):
 for token in ("待接管", "全局余量"):
     if token not in portable:
         fail(f"portable/SKILL.md pause-line guard (R3): missing token {token!r}")
+
+# --- 11. agent-roster freeze (red line R1) --------------------------------------
+# Six-domain routing is a table carried by data-sourcer, not extra headcount:
+# the 4+1 roster is frozen; data-source-bound subagents are forbidden.
+AGENT_FREEZE = [
+    "data-analyst.md",
+    "data-sourcer.md",
+    "industry-competitor-researcher.md",
+    "research-analytics-team-team-lead.md",
+    "visualizer.md",
+]
+if agent_files != AGENT_FREEZE:
+    fail(f"agent-roster freeze (R1): agents/ must stay exactly the 5 fixed role files {AGENT_FREEZE}; data-source-bound subagents are forbidden, got {agent_files}")
+
+# --- 12. aggregation-gateway qualifier guard (red line R2) ----------------------
+# AgentEarth/agentkey are optional enhancement layers, never hardwired domain
+# sources: every mention in data-sourcer.md must sit next to a conditional
+# qualifier (若平台已连 / 已连才启用) within 200 chars.
+GATEWAY_RE = re.compile(r"agentearth|agentkey", re.IGNORECASE)
+GATEWAY_QUALIFIERS = ("若平台已连", "已连才启用")
+GATEWAY_PROXIMITY = 200
+sourcer = (ROOT / "agents" / "data-sourcer.md").read_text(encoding="utf-8")
+for gm in GATEWAY_RE.finditer(sourcer):
+    window = sourcer[max(0, gm.start() - GATEWAY_PROXIMITY): gm.end() + GATEWAY_PROXIMITY]
+    if not any(q in window for q in GATEWAY_QUALIFIERS):
+        fail(
+            f"aggregation-gateway qualifier guard (R2): {gm.group(0)!r} at offset {gm.start()} in "
+            f"agents/data-sourcer.md has no conditional qualifier ({' / '.join(GATEWAY_QUALIFIERS)}) "
+            f"within {GATEWAY_PROXIMITY} chars — gateways are optional enhancement layers, never hardwired sources"
+        )
+
+# --- 13. bounded revise-loop guard (red line R3) --------------------------------
+# The acceptance/revise loop must keep its termination tokens and must not
+# pick up unbounded-loop vocabulary.
+for token in ("最多 2 轮修订", "强制通过"):
+    if token not in lead:
+        fail(f"bounded revise-loop guard (R3): team-lead lost termination token {token!r}")
+for token in ("无限循环", "直到满意", "直到完美", "不限轮次", "无上限修订"):
+    if token in lead:
+        fail(f"bounded revise-loop guard (R3): team-lead contains unbounded-loop vocabulary {token!r}")
 
 # --- report -----------------------------------------------------------------
 if errors:

@@ -1,3 +1,21 @@
+## [0.7.0] - 2026-08-22
+
+P1 批（全局最优 spec v1.2 · S1c + S2 + S3 + S4 + S7）：验收先行 + 六域路由 + 域独立性裁决 + credit 双口径 + 红线 CI 门禁。
+
+### Added
+- **S2 · 六域取数路由表（data-sourcer.md）**：D1–D6 平台分域首选源 / 降级路径 / 同源警告 / 启用条件——TRAE 侧 tdx（通达信）／wind-aifin／天眼一下／pkulaw 原生资产映射，WorkBuddy 侧 westock-mcp／yingmi／tyc-mcp／patsnap-search；编制铁律：**域是路由维度不是 subagent 编制**（4+1 角色不变，工具进武器库）。
+- **S7 · 聚合网关多路探测 SOP（data-sourcer.md）**：AgentEarth 等聚合网关域能力判定四路探测缺一不可（① 关键词直查 ② 语义路由 ③ 厂商名探测 ④ 执行冒烟）；负向结论必标 `probe-scoped` 禁止外推（实证：同网关 keyword 直查与厂商名探测工具数 6 vs 122）；探测消耗计入 credit 口径。
+- **S1c · 验收先行（team-lead.md Step 0）**：`dispatch` 前产出「验收标准（每条含度量锚点）＋ 终止条件三态（复用『最多 2 轮修订＋第 3 次强制通过』语义，不新增循环）」，交用户 1 轮确认；确认后记入《研究参数卡》推荐字段「验收标准」——与 dmr v2.6.0 Step 0 产出行对齐。
+- **S3 · 域独立性检查（team-lead.md Phase 2 裁决前置）**：候选 `Confirmed` 结论的支撑源标采集域（D1–D6）；同域对（共享底层数据，典型如 tdx ＋ AgentEarth-Tushare 同引交易所公告）最高标 `Corroborated`，不得标 `Confirmed`；不修改 dmr 置信阈值定义，仅作裁决前置门。
+- **S4 · credit 双口径（team-lead.md 全局预算器）**：聚合网关调用按 credit 计（调用数 × 0.5 credit/次），软预警线默认 30 credit/次调研，只预警不硬断；与次数口径（80% 预警）双轨并行，任一触发即广播「停止扩源、整理回传」。
+- **CI 检查 11–13（红线 R1–R3 门禁）**：11 编制冻结（agents/ 恒为 5 个既定角色文件）；12 聚合网关限定词守卫（data-sourcer.md 中 agentearth/agentkey 每次出现处邻近 200 字符内必含「若平台已连 / 已连才启用」）；13 有界修订循环守卫（「最多 2 轮修订」＋「强制通过」token 在位，无无界语汇）。
+- **`--self-test` 负向矩阵**：consistency_check.py 新增自测模式——3 例注入违例（第 6 个 agent 文件 / 无限定词网关提及 / 删强制通过 token），每例必须使门禁 FAIL；CI workflow 增自测步骤随门禁执行。（注：检查 12 负向例采用「注入无限定词提及」而非「删除单处限定词」——现行文本限定词密集，删除单处后邻近 200 字符内仍有其他限定词覆盖，不构成对规则本身的违例。）
+
+### Changed
+- dmr `requires` 由 `>=2.5.0 <3` 收紧为 `>=2.6.0 <3`（plugin.json ＋ team-lead frontmatter ＋ portable metadata 三处同步；团队现依赖 dmr v2.6.0 Step 0 验收先行与参数卡 schema）。
+- README：CI 门禁 10 → 13 项（EN＋CN）；dmr pin 文本 2.3.4 → 2.6.0；新增 0.7.0 版本历史。
+- data-sourcer.md 核心能力新增「六域路由取数」条目；工作流第 2 步接入六域路由表。
+
 ## [0.6.1] - 2026-08-20
 
 一致性修复：消除与 dmr v2.5.0 的参数卡字段漂移 + 内部命名不一致。

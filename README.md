@@ -32,7 +32,7 @@
 - **Member checkpoint obligations**: at ≤20% remaining turns (per each agent's own frontmatter maxTurns) or budget warning — stop collecting, return a structured digest.
 
 ### Files
-- `.codebuddy-plugin/plugin.json` — package manifest (incl. `requires: deep-market-research >=2.3.4 <3` version pin)
+- `.codebuddy-plugin/plugin.json` — package manifest (incl. `requires: deep-market-research >=2.6.0 <3` version pin)
 - `agents/` — 5 role agents (team-lead + 4 members)
 - `avatars/` — member icons (256×256, ≤18 KB each)
 - `portable/SKILL.md` — cross-platform asset-routing annex
@@ -40,7 +40,7 @@
 - `.github/workflows/consistency-gate.yml` — CI single-source-of-truth gate
 - `CHANGELOG.md`, `LICENSE`
 
-### CI gate — 10 consistency checks
+### CI gate — 13 consistency checks
 1. version parity (plugin.json == portable == CHANGELOG)
 2. dmr requires-pin present in three places
 3. no bare-github dead links in README
@@ -51,8 +51,14 @@
 8. README drift + primitive-ban guards (three-layer positioning, templates A–E, CI count matches; platform verbs banned outside contract.md)
 9. orchestration contract guard (contract.md exists, 3 verbs × 3 platforms, ≤150 lines, referenced by team-lead)
 10. pause-line guard (timeout → snapshot → pending-takeover, 3-branch adjudication; rerun spends the global slack, never raises the cap)
+11. agent-roster freeze (R1): agents/ stays exactly the 5 fixed role files — six-domain routing is a table, not extra headcount
+12. aggregation-gateway qualifier guard (R2): every agentearth/agentkey mention in data-sourcer.md carries a conditional qualifier (若平台已连 / 已连才启用) within 200 chars — gateways stay optional enhancement layers
+13. bounded revise-loop guard (R3): team-lead keeps the "最多 2 轮修订 + 强制通过" termination tokens; no unbounded-loop vocabulary
+
+`--self-test` runs the negative matrix in CI: 3 injected violations, each must FAIL the gate.
 
 ### History & roadmap
+- **0.7.0** — P1 batch (global-optimal spec v1.2): acceptance-first (verify criteria + termination conditions before `dispatch`, 1 round of user confirmation, aligned with dmr v2.6.0 Step 0); six-domain routing table D1–D6 (platform-split preferred sources + fallback paths + same-source warnings — routing is a table, not extra headcount); aggregation-gateway four-path probe SOP (negative findings must be `probe-scoped`, never extrapolated); domain-independence adjudication gate (same-domain source pairs cap at `Corroborated`); credit dual-track budget (gateway calls × 0.5 credit, soft warning at 30); CI checks 11–13 (roster freeze / gateway qualifiers / bounded revise loop) + negative-matrix self-test; dmr `requires` tightened to `>=2.6.0 <3`.
 - **0.6.1** — consistency fix: research parameter-card source-pool entry format unified to `实体 | 域 | 源URL | 层级 | 日期 | 置信` (fixed internal `层级Tier` English pollution + `URL`/`源URL` drift); field-definition pointer now targets dmr v2.5.0 structured schema; dmr `requires` tightened to `>=2.5.0 <3`.
 - **0.6.0** — pause-line / pending-takeover semantics: member timeout no longer jumps straight to degradation — snapshot first (piggybacked on checkpoints), mark pending-takeover, then a 3-branch adjudication (clean rerun / human takeover via the intervention window / accept degradation); batch rerun forbidden; rerun budget = global slack only.
 - **0.5.0** — primitive downshift: all platform-specific orchestration verbs removed from agent bodies, portable, and README; agents now speak contract verbs only; WorkBuddy parameter details live in contract.md; CI primitive-ban guard.
@@ -97,7 +103,7 @@
 - **成员 checkpoint 义务**：剩余轮次 ≤20%（以各自 frontmatter maxTurns 为基数）或预算预警时——停止采集、回传结构化摘要。
 
 ### 文件结构
-- `.codebuddy-plugin/plugin.json` — 包清单（含 `requires: deep-market-research >=2.3.4 <3` 版本 pin）
+- `.codebuddy-plugin/plugin.json` — 包清单（含 `requires: deep-market-research >=2.6.0 <3` 版本 pin）
 - `agents/` — 5 个角色 agent（主理人 + 4 成员）
 - `avatars/` — 成员图标（256×256，单张 ≤18KB）
 - `portable/SKILL.md` — 跨平台资产路由 annex
@@ -105,7 +111,7 @@
 - `.github/workflows/consistency-gate.yml` — CI 单一事实源一致性门禁
 - `CHANGELOG.md`、`LICENSE`
 
-### CI 门禁 — 10 项一致性检查
+### CI 门禁 — 13 项一致性检查
 1. 版本对齐（plugin.json == portable == CHANGELOG）
 2. dmr requires-pin 三处在位
 3. README 无裸 github 死链
@@ -116,8 +122,14 @@
 8. README 漂移 + 原语清零守卫（三层定位、模板 A–E、CI 项数一致；平台动词仅允许出现在 contract.md）
 9. 编排契约守卫（contract.md 存在、3 动词 × 3 平台、≤150 行、被 team-lead 引用）
 10. 暂停线守卫（超时 → 快照 → 待接管 → 三分支裁决；重跑只花全局余量、永不追加封顶）
+11. 编制冻结守卫（R1）：agents/ 恒为 5 个既定角色文件——六域路由是表不是编制，禁建数据源绑定型 subagent
+12. 聚合网关限定词守卫（R2）：data-sourcer.md 中 agentearth/agentkey 每次出现处邻近 200 字符内必含限定词（若平台已连 / 已连才启用）——网关只作可选增强层，不作硬配置数据源
+13. 有界修订循环守卫（R3）：team-lead 保有「最多 2 轮修订＋强制通过」终止 token；验收循环无无界语汇
+
+`--self-test` 在 CI 中运行负向矩阵：3 例注入违例，每例必须使门禁 FAIL。
 
 ### 版本历史与路线图
+- **0.7.0** — P1 批（全局最优 spec v1.2）：验收先行（`dispatch` 前产出验收标准＋终止条件，用户 1 轮确认，与 dmr v2.6.0 Step 0 对齐）；六域取数路由表 D1–D6（平台分域首选源＋降级路径＋同源警告——路由是表不是编制）；聚合网关四路探测 SOP（负向结论必标 `probe-scoped`、禁止外推）；域独立性裁决门（同域源对最高标 `Corroborated`）；credit 双口径预算（网关调用 × 0.5 credit，软预警线 30）；CI 检查 11–13（编制冻结 / 网关限定词 / 有界修订循环）＋负向矩阵自测；dmr `requires` 收紧为 `>=2.6.0 <3`。
 - **0.6.1** — 一致性修复：研究参数卡「已收集来源池」池条目格式统一为 `实体 | 域 | 源URL | 层级 | 日期 | 置信`（修正内部 `层级Tier` 英文污染与 `URL`/`源URL` 术语漂移）；字段定义指针改指 dmr v2.5.0 结构化 schema；dmr `requires` 收紧为 `>=2.5.0 <3`。
 - **0.6.0** — 暂停线 / 待接管语义：成员超时不再直跳降级——先落执行快照（挂 checkpoint 回传）、标「待接管」，再由主理人三分支裁决（清理重跑 / 人工接手走介入窗口 / 接受降级）；禁止整批重跑；重跑预算只取全局余量。
 - **0.5.0** — 原语下沉：agents 正文、portable、README 中的平台专属编排动词全部清零，agents 只说契约动词；WorkBuddy 参数细则收编入 contract.md；CI 原语清零守卫。
