@@ -1,3 +1,11 @@
+## [0.7.2] - 2026-08-22
+
+P2 批次（版本精确化 + 诚实标注）：dmr pin 区间收紧 + Coze 适配路径未实测标注。
+
+### Changed
+- dmr `requires` 精确化为 `>=2.7.0 <3`（plugin.json ＋ team-lead frontmatter ＋ portable metadata 三处同步）——本版已验证 dmr v2.7.0（机检门禁排版/模板容差修复后），pin 区间由 `>=2.6.0 <3`（方向安全但欠精确）收紧为声明已验证范围。
+- orchestration/contract.md 适配表 Coze 列标注「设计态，未实测」——诚实反映 Coze 路径未经真机验证，防读表者误认为已验证。
+
 ## [0.7.1] - 2026-08-22
 
 README 门面同步 + 检查 8 机制 token 守卫（SOP 内核零变化）。
@@ -8,10 +16,6 @@ README 门面同步 + 检查 8 机制 token 守卫（SOP 内核零变化）。
 
 ### Added
 - 检查 8 README_REQUIRED 扩展 4 枚机制 token（待接管 / credit / 验收标准 / 域独立性）——README 缺任一机制描述即 CI FAIL，堵住「机制已交付、README 未记载」的漂移通道。
-
-### Changed
-- dmr `requires` 精确化为 `>=2.7.0 <3`（plugin.json ＋ team-lead frontmatter ＋ portable metadata 三处同步）——本版已验证 dmr v2.7.0（机检门禁排版/模板容差修复后），pin 区间由 `>=2.6.0 <3`（方向安全但欠精确）收紧为声明已验证范围。
-- orchestration/contract.md 适配表 Coze 列标注「设计态，未实测」——诚实反映 Coze 路径未经真机验证，防读表者误认为已验证。
 
 ## [0.7.0] - 2026-08-22
 

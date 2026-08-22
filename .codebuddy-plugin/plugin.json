@@ -1,6 +1,6 @@
 {
   "name": "research-analytics-team",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "Team-orchestration expert package on the dmr credibility core (T1-T4 source grading, >=2/3-source cross-validation, templates A-E) + WorkBuddy connectors (patsnap/westock/github/canva, tyc-mcp if connected) + budget governor / two-phase source pool / run-manifest / pause-line takeover (timeout -> snapshot -> pending-takeover, 3-branch adjudication). The portable SKILL.md is a platform asset-routing annex, not a research entry.",
   "author": {
     "name": "Rain / WorkBuddy",
