@@ -31,7 +31,7 @@
 
 ## 平台适配表（3 动词 × 3 平台）
 
-| 契约动词 | WorkBuddy | Coze | 单线程（快版默认） |
+| 契约动词 | WorkBuddy | Coze（设计态，未实测） | 单线程（快版默认） |
 |---|---|---|---|
 | `assemble` | 主理人 TeamCreate 建团队 + spawn 拉成员（subagent_type=成员 Agent ID） | 工作流编排：成员=工作流子节点/子会话，主节点持协作边界 | 不组队——主理人顺序扮演各角色（M3 铁律：免 TeamCreate/spawn，直跑 dmr Step 1/4/8） |
 | `dispatch` | Agent 工具调度 + SendMessage 下发任务卡（name/subagent_type 传成员 Agent ID） | 子会话 prompt 下发：**子会话不继承 Skills，参数卡必须内联**（角色卡要点+任务卡+dmr 裁决标准要点全部写进 prompt，不得假设子会话能加载 dmr） | 内联执行该成员职责段（预算份额内），无跨会话传递 |

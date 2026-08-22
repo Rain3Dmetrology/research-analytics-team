@@ -41,7 +41,7 @@
   },
   "plugin": "research-analytics-team",
   "requires": {
-    "deep-market-research": ">=2.6.0 <3"
+    "deep-market-research": ">=2.7.0 <3"
   },
   "tags": [
     { "en": "Market Research", "zh": "市场调研" },

@@ -15,7 +15,7 @@ metadata:
   version: "0.7.1"
   author: "Rain / WorkBuddy"
   source_of_truth: "deep-market-research SKILL.md（调研 SOP 权威）+ research-analytics-team-team-lead.md（团队编排权威）"
-  requires: "deep-market-research >=2.6.0 <3"
+  requires: "deep-market-research >=2.7.0 <3"
 ---
 
 # Research Orchestrator — 平台资产路由 Annex（便携版 / 跨平台）
