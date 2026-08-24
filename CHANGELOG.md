@@ -1,3 +1,15 @@
+## [0.7.3] - 2026-08-24
+
+安装工具批次（分发补课）：install 脚本 + 发布清单 + README pin 同步。
+
+### Added
+- **install.ps1 / install.sh（annex 一键安装 + dmr pin 预检）**：portable/SKILL.md 以 `research-orchestrator` 名落位各已装平台 skills/ 目录，逐平台核对已装 dmr 副本是否满足 pin（不足或缺失则 WARNING，不阻断）；`.gitattributes` 固定 install.sh LF。关闭「平台 annex 副本漂移」问题类（实测发现野外 0.6.1 副本落后 3 版——0.7.0 P1 批机制全部缺失）。
+- **README 发布清单（Release checklist，中英双语 7 步）**：本地门禁 → 版本四源对齐（含 README 历史条目与 Files 节 pin 同批更新）→ 双安装脚本冒烟 → CI 绿 → tag → GitHub Release → 平台副本核对。
+
+### Fixed
+- **README Files 节 pin 同步**：`>=2.6.0 <3` → `>=2.7.0 <3`（中英两处；0.7.2 升 pin 时漏改，门禁当时未覆盖该面）。
+- **门禁检查 2 扩展**：README 须逐字携带与 plugin.json 相同的 pin——堵住该漂移复发面（检查项数不变，仍为 13）。
+
 ## [0.7.2] - 2026-08-22
 
 P2 批次（版本精确化 + 诚实标注）：dmr pin 区间收紧 + Coze 适配路径未实测标注。

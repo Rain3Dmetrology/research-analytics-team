@@ -15,6 +15,7 @@
 - **`portable/SKILL.md` = a platform asset-routing annex, NOT a research entry.** It does not respond to research triggers (`调研 / 竞品 / 尽调 / …` are all owned by dmr). It mounts only when dmr Step 1 — or an explicit user request — needs platform assets: connectors, xlsx/Python modeling, visualization, parallel collection.
 
 ### Install
+- **One-click (annex form)**: run `install.ps1` (Windows) or `./install.sh` (Unix) — copies `portable/SKILL.md` into every detected platform's skills directory as `research-orchestrator` and warns when the installed dmr copy is below the required pin.
 - **WorkBuddy (team form)**: clone this repo, copy the repo root into `~/.workbuddy/plugins/marketplaces/my-experts/plugins/research-analytics-team/`, then enable it in the Expert Center.
 - **Other platforms (annex form)**: copy `portable/SKILL.md` into your platform's skills directory. Research intent still routes through dmr; the annex only adds asset routing.
 
@@ -35,18 +36,19 @@
 - **Pause-line / pending-takeover**: a timed-out member freezes a snapshot (budget used, source increments, done/pending) and is marked pending-takeover; the lead then adjudicates among clean rerun (global slack only) / manual takeover / accept degradation.
 
 ### Files
-- `.codebuddy-plugin/plugin.json` — package manifest (incl. `requires: deep-market-research >=2.6.0 <3` version pin)
+- `.codebuddy-plugin/plugin.json` — package manifest (incl. `requires: deep-market-research >=2.7.0 <3` version pin)
 - `agents/` — 5 role agents (team-lead + 4 members)
 - `avatars/` — member icons (256×256, ≤18 KB each)
 - `portable/SKILL.md` — cross-platform asset-routing annex
 - `orchestration/contract.md` — platform-agnostic orchestration contract (3 verbs × 3 platforms)
+- `install.ps1` / `install.sh` — one-click annex installer (per-platform dmr pin preflight)
 - `settings.json` — runtime defaults (language, fallbacks)
 - `.github/workflows/consistency-gate.yml` — CI single-source-of-truth gate
 - `CHANGELOG.md`, `LICENSE`
 
 ### CI gate — 13 consistency checks
 1. version parity (plugin.json == portable == CHANGELOG)
-2. dmr requires-pin present in three places
+2. dmr requires-pin present in four places (plugin.json / portable / team-lead / README Files section)
 3. no bare-github dead links in README
 4. agent manifest parity (dir == plugin.json == teamInfo roster)
 5. every agent still references the dmr core
@@ -61,7 +63,17 @@
 
 `--self-test` runs the negative matrix in CI: 3 injected violations, each must FAIL the gate.
 
+### Release checklist
+1. Before merge: `python scripts/consistency_check.py` (+ `--self-test`) passes locally.
+2. Version parity: plugin.json == portable frontmatter == portable body note == CHANGELOG top; README history entries (EN+CN) and the Files-section pin updated in the same commit.
+3. Smoke both installers: `install.ps1` on Windows, `install.sh` in a Linux container.
+4. Push main → CI green.
+5. Tag `vX.Y.Z` and push the tag.
+6. Publish the GitHub Release from the tag; release notes quote the CHANGELOG entry (errata merge as `Amended` into the existing entry, no new tag).
+7. Re-run the installer; verify platform annex copies match the new version and satisfy the dmr pin.
+
 ### History & roadmap
+- **0.7.3** — install tooling batch: `install.ps1` / `install.sh` one-click annex install with per-platform dmr pin preflight (`.gitattributes` LF pin) — closes the platform-copy drift class (a stale 0.6.1 annex copy was found in the wild, 3 versions behind); README release checklist (7 steps); README Files-section pin sync (`>=2.6.0` → `>=2.7.0`, missed in 0.7.2) + gate check 2 now also enforces the README pin.
 - **0.7.2** — P2 batch (version precision + honest labeling): dmr `requires` tightened to `>=2.7.0 <3` (3-source sync: plugin.json + team-lead frontmatter + portable metadata); Coze column in the contract.md adapter table annotated "design-time, not live-tested".
 - **0.7.1** — README facade sync + check-8 mechanism-token guard (SOP kernel unchanged): README robustness section purged of stale version label; mechanism checklist completed to match 0.6.0/0.7.0 actual delivery (acceptance-first / credit dual-track / domain-independence adjudication / pause-line · pending-takeover); Files section now lists settings.json; check 8 extended 4 mechanism tokens (待接管 / credit / 验收标准 / 域独立性).
 - **0.7.0** — P1 batch (global-optimal spec v1.2): acceptance-first (verify criteria + termination conditions before `dispatch`, 1 round of user confirmation, aligned with dmr v2.6.0 Step 0); six-domain routing table D1–D6 (platform-split preferred sources + fallback paths + same-source warnings — routing is a table, not extra headcount); aggregation-gateway four-path probe SOP (negative findings must be `probe-scoped`, never extrapolated); domain-independence adjudication gate (same-domain source pairs cap at `Corroborated`); credit dual-track budget (gateway calls × 0.5 credit, soft warning at 30); CI checks 11–13 (roster freeze / gateway qualifiers / bounded revise loop) + negative-matrix self-test; dmr `requires` tightened to `>=2.6.0 <3`.
@@ -92,6 +104,7 @@
 - **`portable/SKILL.md` = 平台资产路由 annex，不是调研入口。** 它不响应调研类触发词（`调研 / 竞品 / 尽调 / …` 均归 dmr 接管）；仅当 dmr Step 1——或用户明确点名——需要平台资产（连接器、xlsx/Python 建模、可视化、并行采集）时才挂载。
 
 ### 安装
+- **一键（annex 形态）**：运行 `install.ps1`（Windows）或 `./install.sh`（Unix）——把 `portable/SKILL.md` 以 `research-orchestrator` 名落位各已检测平台的技能目录，并核对已装 dmr 副本是否满足 pin（不足则告警）。
 - **WorkBuddy（团队形态）**：克隆本仓库，把仓库根目录拷入 `~/.workbuddy/plugins/marketplaces/my-experts/plugins/research-analytics-team/`，在专家中心启用。
 - **其他平台（annex 形态）**：把 `portable/SKILL.md` 拷入你平台的技能目录。调研意图仍走 dmr；annex 只补充资产路由。
 
@@ -123,7 +136,7 @@
 
 ### CI 门禁 — 13 项一致性检查
 1. 版本对齐（plugin.json == portable == CHANGELOG）
-2. dmr requires-pin 三处在位
+2. dmr requires-pin 四处在位（plugin.json / portable / team-lead / README Files 节）
 3. README 无裸 github 死链
 4. agent 清单对齐（目录 == plugin.json == teamInfo 花名册）
 5. 每个 agent 仍引用 dmr 内核
@@ -138,7 +151,17 @@
 
 `--self-test` 在 CI 中运行负向矩阵：3 例注入违例，每例必须使门禁 FAIL。
 
+### 发布清单
+1. 合并前：本地跑 `python scripts/consistency_check.py`（含 `--self-test`）通过。
+2. 版本对齐：plugin.json == portable frontmatter == portable 正文注 == CHANGELOG 顶行；README 版本历史（中英）与 Files 节 pin 同批更新。
+3. 双安装脚本冒烟：Windows 跑 `install.ps1`，Linux 容器跑 `install.sh`。
+4. push main → CI 绿。
+5. 打 `vX.Y.Z` tag 并推送。
+6. 从 tag 发布 GitHub Release，notes 引用 CHANGELOG 对应条目（勘误以 Amended 并入既有条目，不打新 tag）。
+7. 重跑安装脚本，核对平台 annex 副本版本 = 新版本且满足 dmr pin。
+
 ### 版本历史与路线图
+- **0.7.3** — 安装工具批次：`install.ps1` / `install.sh` annex 一键安装＋逐平台 dmr pin 预检（`.gitattributes` 固定 LF）——关闭「平台副本漂移」问题类（实测发现野外 0.6.1 副本落后 3 版）；README 发布清单（7 步）；Files 节 pin 同步（`>=2.6.0` → `>=2.7.0`，0.7.2 漏改）＋门禁检查 2 扩展覆盖 README pin。
 - **0.7.2** — P2 批（版本精确化 + 诚实标注）：dmr `requires` 精确化为 `>=2.7.0 <3`（plugin.json + team-lead frontmatter + portable metadata 三源同步）；contract.md 适配表 Coze 列标注「设计态，未实测」。
 - **0.7.1** — README 门面同步 + 检查 8 机制 token 守卫（SOP 内核零变化）：README 工程健壮性小节去除 stale 版本标签、机制清单补齐至 0.6.0/0.7.0 实际交付（验收先行 / credit 双口径 / 域独立性裁决门 / 暂停线·待接管）；Files 节补列 settings.json；检查 8 扩展 4 枚机制 token（待接管 / credit / 验收标准 / 域独立性）。
 - **0.7.0** — P1 批（全局最优 spec v1.2）：验收先行（`dispatch` 前产出验收标准＋终止条件，用户 1 轮确认，与 dmr v2.6.0 Step 0 对齐）；六域取数路由表 D1–D6（平台分域首选源＋降级路径＋同源警告——路由是表不是编制）；聚合网关四路探测 SOP（负向结论必标 `probe-scoped`、禁止外推）；域独立性裁决门（同域源对最高标 `Corroborated`）；credit 双口径预算（网关调用 × 0.5 credit，软预警线 30）；CI 检查 11–13（编制冻结 / 网关限定词 / 有界修订循环）＋负向矩阵自测；dmr `requires` 收紧为 `>=2.6.0 <3`。

@@ -190,6 +190,10 @@ m = re.search(r'^requires:\s*"?' + re.escape(PIN_NAME) + r'[^"\n]*"?$', lead, re
 if not m or not PIN_RANGE.search(m.group(0)):
     fail("team-lead frontmatter missing requires pin for deep-market-research (>=2.x <3)")
 
+# README must carry the live pin verbatim (a stale >=2.6.0 shipped in 0.7.2 — realized drift)
+if pj_req not in readme:
+    fail(f"README must carry the live dmr pin verbatim in the Files section, expected {pj_req!r}")
+
 # --- 3. README dead-link check ---------------------------------------------
 if re.search(r"\]\(\s*https://github\.com/?\s*\)", readme):
     fail("README contains a bare github.com attribution link (dead link)")

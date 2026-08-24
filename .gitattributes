@@ -1,0 +1,2 @@
+# Shell scripts must stay LF — CRLF breaks the shebang and `set -euo pipefail`
+*.sh text eol=lf
