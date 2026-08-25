@@ -73,6 +73,7 @@
 7. Re-run the installer; verify platform annex copies match the new version and satisfy the dmr pin.
 
 ### History & roadmap
+- **0.7.4** — FrontierAgent/Apodex governance audit absorption (5 DAT migrations into contract.md): task-lifecycle five-state board (pending/active/completed/blocked/cancelled, orchestrator-maintained) · orchestrator idle-loop exemption (waiting for sub-agent reports ≠ idle; idle = re-dispatching same task card with zero new evidence) · duplicate-action stop-loss (same query/URL 3× → rollback resample, does not consume round budget) · load-bearing conclusion instant verification (E1 evidence attached at point of production, Phase 2 adjudication only upgrades) · in-flight mid-course correction (user instruction queued to `collect` boundary + partial-validity assessment — unaffected results preserved, no batch rerun; touches the research goal → back to Step 0, source pool retained). Version quadruple-source aligned to 0.7.4.
 - **0.7.3** — install tooling batch: `install.ps1` / `install.sh` one-click annex install with per-platform dmr pin preflight (`.gitattributes` LF pin) — closes the platform-copy drift class (a stale 0.6.1 annex copy was found in the wild, 3 versions behind); README release checklist (7 steps); README Files-section pin sync (`>=2.6.0` → `>=2.7.0`, missed in 0.7.2) + gate check 2 now also enforces the README pin.
 - **0.7.2** — P2 batch (version precision + honest labeling): dmr `requires` tightened to `>=2.7.0 <3` (3-source sync: plugin.json + team-lead frontmatter + portable metadata); Coze column in the contract.md adapter table annotated "design-time, not live-tested".
 - **0.7.1** — README facade sync + check-8 mechanism-token guard (SOP kernel unchanged): README robustness section purged of stale version label; mechanism checklist completed to match 0.6.0/0.7.0 actual delivery (acceptance-first / credit dual-track / domain-independence adjudication / pause-line · pending-takeover); Files section now lists settings.json; check 8 extended 4 mechanism tokens (待接管 / credit / 验收标准 / 域独立性).
@@ -125,7 +126,7 @@
 - **暂停线 / 待接管**：成员超时先落执行快照（已用预算、来源增量、完成/待办）并标「待接管」；主理人三分支裁决——清理重跑（只花全局余量）/ 人工接手 / 接受降级。
 
 ### 文件结构
-- `.codebuddy-plugin/plugin.json` — 包清单（含 `requires: deep-market-research >=2.6.0 <3` 版本 pin）
+- `.codebuddy-plugin/plugin.json` — 包清单（含 `requires: deep-market-research >=2.7.0 <3` 版本 pin）
 - `agents/` — 5 个角色 agent（主理人 + 4 成员）
 - `avatars/` — 成员图标（256×256，单张 ≤18KB）
 - `portable/SKILL.md` — 跨平台资产路由 annex
@@ -161,6 +162,7 @@
 7. 重跑安装脚本，核对平台 annex 副本版本 = 新版本且满足 dmr pin。
 
 ### 版本历史与路线图
+- **0.7.4** — FrontierAgent/Apodex 治理审计吸收（contract.md 5 项 DAT 迁移）：任务生命周期五态任务板（pending/active/completed/blocked/cancelled，主理人唯一维护）· 主理人空转豁免（挂起等待子任务回报 ≠ 空转；空转 = 重复派相同任务卡且零新增证据）· 重复动作止损（相同查询/URL 连续 3 次 → 回滚重采样，不消耗迭代预算）· 承重结论即时验证（产生处附 E1 证据，Phase 2 裁决只升不降）· 运行中中途纠偏（用户指令排队至 collect 边界 + 部分有效性评估——未受影响成果保留、禁止整批重跑；触及调研主目标回 Step 0，来源池保留）。版本四源对齐 0.7.4。
 - **0.7.3** — 安装工具批次：`install.ps1` / `install.sh` annex 一键安装＋逐平台 dmr pin 预检（`.gitattributes` 固定 LF）——关闭「平台副本漂移」问题类（实测发现野外 0.6.1 副本落后 3 版）；README 发布清单（7 步）；Files 节 pin 同步（`>=2.6.0` → `>=2.7.0`，0.7.2 漏改）＋门禁检查 2 扩展覆盖 README pin。
 - **0.7.2** — P2 批（版本精确化 + 诚实标注）：dmr `requires` 精确化为 `>=2.7.0 <3`（plugin.json + team-lead frontmatter + portable metadata 三源同步）；contract.md 适配表 Coze 列标注「设计态，未实测」。
 - **0.7.1** — README 门面同步 + 检查 8 机制 token 守卫（SOP 内核零变化）：README 工程健壮性小节去除 stale 版本标签、机制清单补齐至 0.6.0/0.7.0 实际交付（验收先行 / credit 双口径 / 域独立性裁决门 / 暂停线·待接管）；Files 节补列 settings.json；检查 8 扩展 4 枚机制 token（待接管 / credit / 验收标准 / 域独立性）。

@@ -190,9 +190,22 @@ m = re.search(r'^requires:\s*"?' + re.escape(PIN_NAME) + r'[^"\n]*"?$', lead, re
 if not m or not PIN_RANGE.search(m.group(0)):
     fail("team-lead frontmatter missing requires pin for deep-market-research (>=2.x <3)")
 
-# README must carry the live pin verbatim (a stale >=2.6.0 shipped in 0.7.2 — realized drift)
-if pj_req not in readme:
-    fail(f"README must carry the live dmr pin verbatim in the Files section, expected {pj_req!r}")
+# README must carry the live pin verbatim in BOTH the EN "Files" and the CN
+# "文件结构" sections (a stale >=2.6.0 shipped in 0.7.2 and re-drifted in the
+# CN section in 0.7.4 — a single whole-README substring check silently passed
+# that drift because the EN line alone contained the live pin).
+pin_sections = [
+    ("EN Files",  "### Files"),
+    ("CN 文件结构", "### 文件结构"),
+]
+for label, header in pin_sections:
+    hdr = readme.find(header)
+    if hdr == -1:
+        fail(f"README [{label}] section not found; expected a Files/文件结构 section")
+    nxt = readme.find("\n### ", hdr + 1)
+    section = readme[hdr:] if nxt == -1 else readme[hdr:nxt]
+    if pj_req not in section:
+        fail(f"README [{label}] section must carry the live dmr pin verbatim, expected {pj_req!r}")
 
 # --- 3. README dead-link check ---------------------------------------------
 if re.search(r"\]\(\s*https://github\.com/?\s*\)", readme):
