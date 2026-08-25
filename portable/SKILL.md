@@ -12,7 +12,7 @@ compatibility: >
   由 dmr Step 1 显式挂载，不再自称单会话等价实现）；
   平台专属能力（Connector/MCP/automation/Skill 调用）按平台可用性尽力启用，缺失则回退默认层（内置搜索 + 免费 API）。
 metadata:
-  version: "0.7.4"
+  version: "0.7.5"
   author: "Rain / WorkBuddy"
   source_of_truth: "deep-market-research SKILL.md（调研 SOP 权威）+ research-analytics-team-team-lead.md（团队编排权威）"
   requires: "deep-market-research >=2.7.0 <3"
@@ -20,7 +20,7 @@ metadata:
 
 # Research Orchestrator — 平台资产路由 Annex（便携版 / 跨平台）
 
-> 版本 0.7.4 ｜ 定位：**dmr 的采集素材增强附件（annex）**——不是调研内核，也不是单会话等价实现。
+> 版本 0.7.5 ｜ 定位：**dmr 的采集素材增强附件（annex）**——不是调研内核，也不是单会话等价实现。
 > **意图路由与调研 SOP 的唯一权威是 deep-market-research（dmr）**；本 annex 仅在 dmr 流水线需要平台资产（L3/L4/L5）或并行采集编排时被挂载。团队编排形态的权威是 `research-analytics-team-team-lead.md`。
 > 跨平台：WorkBuddy 直接可用；Trae / Cursor / CodeBuddy 等 Markdown 技能平台可加载本文件，平台专属能力（Connector/MCP/automation/Skill）按可用性尽力启用，缺失回退默认层（内置搜索 + 免费 API）。
 
@@ -110,6 +110,7 @@ dmr 的置信标签（Confirmed/Corroborated/Single-source/Unverified）、矛�
 - **介入窗口**：每阶段进度通报后显式询问用户「继续 / 转向 / 补充信源」（快版免询问）；中途追加信源 → 写入来源池触发局部重算，不整轮重跑。
 - **进度通报**：每阶段结束通报（已完成/进行中/已确认结论/预算消耗/风险降级/下一步）；终稿含**质量双轴**——评分卡（dmr 100 分制）+ 置信分布占比——与最大不确定性 1 条；方法论声明固定含**裁决路径**（多路终裁 / 单线程自裁）与降级未执行项。
 - **来源池两段式复用**：已收集来源池为唯一证据入口；并行 `dispatch` 前做分域预分配（同一实体同一域只一路 owner），回灌后合并去重裁决；新源回写、跨阶段只从此池取数。
+- **重复动作止损**：任一路子代理重复相同查询/URL **连续 ≥3 次** → 回滚该动作重采样，**不消耗采集轮次预算**；**承重中间结果**在产生处即时附加 E1 级证据（源 URL+层级+日期）随回传统一回写，不等终稿对抗审计倒推（对齐治理规范 §二 E 与 §六.5）。
 - **渲染收敛**：并行子任务只产条目级结构化证据表，全文渲染只在收口阶段一次完成。
 - **收尾三件套**：① 知识沉淀（dmr §七对齐：评分卡+开放问题+核心证据 → 结构化 note，重跑同主题先读历史 note）；② `run-manifest.json`（查询/参数卡快照/来源池终态/裁决决策/组件版本/预算消耗/降级事件）随报告归档；③ 下次同域调研预热提示。
 - **6 维质检 + 有界修订循环**：维度与轮次口径以 dmr 为唯一定义处（章节级最多 3 轮，第 3 轮强制通过并附遗留改进）；终稿闸门只复检不重定义；命中硬性退回条件退回责任环节局部 patch，最多 2 轮 + 第 3 次强制通过并附遗留改进建议，残留转开放问题。

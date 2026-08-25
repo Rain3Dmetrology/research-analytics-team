@@ -1,3 +1,17 @@
+## [0.7.5] - 2026-08-25
+
+0.7.4 传导补丁 + 第 4 平台适配列：把 0.7.4 已交付契约层机制**传导到执行者与文档面**（堵住「机制已交付、执行者/README 不知」漂移，对齐 0.7.1 检查 8 建窗意图）；契约适配表由 3 平台扩为 4 平台（加 TRAE/TraeWork SOLO 列，对齐治理规范 M4 L0 / M9 / M10 / R14）。
+
+### Changed
+- **team-lead SOP 启动第一步扩句 · 五态任务板 + 中途纠偏指针**：主理人唯一维护五态任务板（pending/active/completed/blocked/cancelled），任务推进/阻塞标「待接管」/进度通报按状态流转；运行中中途纠偏以 contract.md 暂停线节第 4 条为准（部分有效性评估，禁止整批重跑）。
+- **README 中英「工程健壮性」各补契约层治理机制条目**：五态任务板 / 主理人空转豁免 / 重复动作止损 / 承重结论即时验证 / 运行中中途纠偏——完整语义以 contract.md 为准。
+- **portable/SKILL.md §五 补重复动作止损 + 承重中间结果即时验证两行**（对单会话 annex 形态同样适用，0.7.4 未落）。
+- **consistency_check 检查 8 扩 2 枚 README 机制 token（五态 / 中途纠偏）**——README 契约层机制一旦漂移门禁即 FAIL（对齐 0.7.1 检查 8 机制 token 守卫建窗意图）；**检查 9 平台元组加 TRAE**。
+- **contract.md 由 3 平台扩为 4 平台适配表**：新增 TRAE（TraeWork/SOLO，会话级任务型）列——assemble=主会话即协作边界、按研究子问题 spawn ≤3（M4 L0）；dispatch=Agent 工具 + 角色 `model` 档位 override（M9）、并行 ≤3 独立盲评（M10）；collect=子智能体返回入池、R14 排队至子代理返回边界；新增 TRAE 适配参数细则 4 条与「模型档位与降级标注」（M9 同模降级强制标注入 contract.md——0.7.4 的 WorkBuddy 单模型标注缺口）。
+
+### 验收记录
+- consistency_check.py 本机门禁 PASSED（v0.7.5）；`--self-test` 负向矩阵 3/3 通过；README/Files 中英 pin 逐处校验通过；contract.md 行数计 ≤150。
+
 ## [0.7.4] - 2026-08-25
 
 FrontierAgent/Apodex 治理审计吸收（DAT 5 项迁移）：编排契约增任务生命周期五态、主理人空转豁免、重复动作止损、承重结论即时验证、中途指令部分有效性评估——全部以契约动词落 contract.md，不散入上游 SOP；对齐治理规范 v2.3（§六.5 / §二 E / §六.9 R14）。

@@ -1,6 +1,6 @@
 # 编排契约（Orchestration Contract）
 
-> 平台无关的 3 个编排动词 + 3 平台适配表。**上游（team-lead / agents / portable）正文只写契约动词；平台专属语法只允许出现在本文件。** 新平台接入 = 适配表加一列，上游零改动（audit M2 解法）。
+> 平台无关的 3 个编排动词 + 4 平台适配表。**上游（team-lead / agents / portable）正文只写契约动词；平台专属语法只允许出现在本文件。** 新平台接入 = 适配表加一列，上游零改动（audit M2 解法）。
 
 ## 使用规则
 
@@ -39,13 +39,25 @@
 | blocked | 暂停线触发（成员超时/无响应）= 待接管 | 走三分支裁决 |
 | cancelled | 裁决③接受降级 / 用户中止 | 缺口入开放问题，证据保留 |
 
-## 平台适配表（3 动词 × 3 平台）
+## 平台适配表（3 动词 × 4 平台）
 
-| 契约动词 | WorkBuddy | Coze（设计态，未实测） | 单线程（快版默认） |
-|---|---|---|---|
-| `assemble` | 主理人 TeamCreate 建团队 + spawn 拉成员（subagent_type=成员 Agent ID） | 工作流编排：成员=工作流子节点/子会话，主节点持协作边界 | 不组队——主理人顺序扮演各角色（M3 铁律：免 TeamCreate/spawn，直跑 dmr Step 1/4/8） |
-| `dispatch` | Agent 工具调度 + SendMessage 下发任务卡（name/subagent_type 传成员 Agent ID） | 子会话 prompt 下发：**子会话不继承 Skills，参数卡必须内联**（角色卡要点+任务卡+dmr 裁决标准要点全部写进 prompt，不得假设子会话能加载 dmr） | 内联执行该成员职责段（预算份额内），无跨会话传递 |
-| `collect` | 成员回传消息 → 主理人解析结构化摘要 → 写入来源池 | 子会话产物节点解析 → 摘要回写主节点 → 入池 | 产出直接写入来源池（Phase 2 裁决唯一入口） |
+| 契约动词 | WorkBuddy | Coze（设计态，未实测） | 单线程（快版默认） | TRAE（TraeWork/SOLO，会话级任务型） |
+|---|---|---|---|---|
+| `assemble` | 主理人 TeamCreate 建团队 + spawn 拉成员（subagent_type=成员 Agent ID） | 工作流编排：成员=工作流子节点/子会话，主节点持协作边界 | 不组队——主理人顺序扮演各角色（M3 铁律：免 TeamCreate/spawn，直跑 dmr Step 1/4/8） | 不建持久团队——协作边界即主会话；按研究子问题 spawn ≤3 子智能体（对齐 M4 L0 档），成员=单轮任务型返回，无持久 inbox |
+| `dispatch` | Agent 工具调度 + SendMessage 下发任务卡（name/subagent_type 传成员 Agent ID） | 子会话 prompt 下发：**子会话不继承 Skills，参数卡必须内联**（角色卡要点+任务卡+dmr 裁决标准要点全部写进 prompt，不得假设子会话能加载 dmr） | 内联执行该成员职责段（预算份额内），无跨会话传递 | Agent 工具派发（subagent_type=explore/general_task，调研子任务用 explore 只读联网）+ 角色 `model` 档位 override；任务卡内联；并行 ≤3、独立盲评（M10） |
+| `collect` | 成员回传消息 → 主理人解析结构化摘要 → 写入来源池 | 子会话产物节点解析 → 摘要回写主节点 → 入池 | 产出直接写入来源池（Phase 2 裁决唯一入口） | 子智能体返回消息 → 解析结构化摘要 → 写入来源池；R14 中途指令排队至子代理返回边界 |
+
+## TRAE 适配参数细则（dispatch / assemble / collect）
+
+1. `assemble` 在 TRAE 不建持久团队/持久 inbox——协作边界即主会话；成员按**研究子问题**（非固定域分工）spawn，并行数 ≤3（对齐治理规范 M4 L0 档）。成员超时/无响应的 checkpoint 兜底退化为「返回时一次性摘要」，语义以本文件暂停线节为准。
+2. `dispatch` 用 Agent 工具：`subagent_type` 传 explore（只读联网调研子任务）/ general_task 等；按角色建议 `model` 档位 override（对齐治理规范 M9：主=强推理、执行=default、验证/judge=异构模型家族，平台支持时）。
+3. `collect` 解析子智能体返回入来源池；成员产出若为非结构化，按上表「失败与降级适配·collect」强制收取结构化摘要再入池。
+4. 周期监测（模板 E）可由 TRAE 原生 Schedule 周期任务触发——assemble 时带上期快照与对账基准，走增量路径，禁止全量重写。
+
+## 模型档位与降级标注（对齐治理规范 M9）
+
+- `assemble` / `dispatch` / 裁决角色的模型档位分配与跨模型 `judge` 由宿主平台能力决定；平台仅为单一模型后端时，对抗审计 / 跨模型裁决**降级为同模自评**，并必须在方法论声明显式标注「对抗审计为同模自评」（禁止以同模自评静默冒充异构裁决）。
+- 平台支持子任务级模型选择时（如 TRAE Agent 工具 `model` override），优先给验收 / 裁决角色配**异构模型家族**做跨模校验（对齐 M10 异构仲裁；WorkBuddy 同模型下按前款降级标注）。
 
 ## WorkBuddy 适配参数细则（dispatch / assemble）
 

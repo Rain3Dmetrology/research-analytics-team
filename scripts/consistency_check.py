@@ -299,6 +299,8 @@ README_REQUIRED = [
     "credit",       # 0.7.0 gateway-credit budget track must stay documented
     "验收标准",      # 0.7.0 acceptance-first (aligned with dmr Step 0) must stay documented
     "域独立性",      # 0.7.0 same-domain-source cap (Corroborated, not Confirmed) must stay documented
+    "五态",          # 0.7.4 contract-layer five-state task board must stay documented in README
+    "中途纠偏",      # 0.7.4 in-flight correction must stay documented in README
 ]
 for token in README_FORBIDDEN:
     if token in readme:
@@ -331,7 +333,7 @@ else:
     for verb in ("assemble", "dispatch", "collect"):
         if verb not in contract:
             fail(f"orchestration/contract.md missing contract verb {verb!r}")
-    for platform in ("WorkBuddy", "Coze", "单线程"):
+    for platform in ("WorkBuddy", "Coze", "单线程", "TRAE"):
         if platform not in contract:
             fail(f"orchestration/contract.md adapter table missing platform {platform!r}")
     if "子会话不继承 Skills" not in contract:

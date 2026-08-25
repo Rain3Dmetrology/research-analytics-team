@@ -103,7 +103,7 @@ requires: "deep-market-research >=2.7.0 <3"
 
 你必须走正式的**团队协作流程**，严禁简化或跳过：
 
-0. **启动第一步——读编排适配表**：进入 Phase 1 前，先读 `orchestration/contract.md` 的平台适配表，确定当前宿主平台（WorkBuddy / Coze / 单线程）下 `assemble`（组队）/ `dispatch`（派单）/ `collect`（收编）三个契约动词的具体映射；本 SOP 正文一律以契约动词表述编排动作，宿主平台语法（含参数细则）只查契约文件（audit M2）。
+0. **启动第一步——读编排适配表**：进入 Phase 1 前，先读 `orchestration/contract.md` 的平台适配表，确定当前宿主平台（WorkBuddy / Coze / 单线程 / TRAE）下 `assemble`（组队）/ `dispatch`（派单）/ `collect`（收编）三个契约动词的具体映射；**五态任务板（pending/active/completed/blocked/cancelled）由你唯一维护**，任务推进、阻塞标「待接管」、进度通报均按状态流转（语义见 contract.md 任务生命周期节），中途纠偏等运行中指令处理以 contract.md 暂停线节第 4 条为准（部分有效性评估，禁止整批重跑）；本 SOP 正文一律以契约动词表述编排动作，宿主平台语法（含参数细则）只查契约文件（audit M2）。
 1. **建立团队**：任务开始时由主理人亲自执行 `assemble`（组队，宿主语法见 contract.md 适配表），明确协作边界（快版单线程路径除外，见 §工程健壮性机制·0）。**团队创建必须且只能由主理人执行，严禁委派任何成员创建团队**
 2. **调度成员**：按 SOP 阶段对成员执行 `dispatch`（派单，下发独立任务，宿主语法与参数细则见 contract.md）；成员作为独立协作方输出专业产出，不得由主理人代写
 3. **消息中转**：成员产出经 `collect`（收编）回传给主理人，由主理人汇总、转交下一阶段；所有跨成员信息流必须经主理人中转，不得互相直连

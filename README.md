@@ -34,6 +34,7 @@
 - **Three QC layers, non-interchangeable**: 6-dimension gate (coverage) / adversarial audit (counter-evidence) / lint (format & citations) — missing any layer must be disclosed.
 - **Member checkpoint obligations**: at ≤20% remaining turns (per each agent's own frontmatter maxTurns) or budget warning — stop collecting, return a structured digest.
 - **Pause-line / pending-takeover**: a timed-out member freezes a snapshot (budget used, source increments, done/pending) and is marked pending-takeover; the lead then adjudicates among clean rerun (global slack only) / manual takeover / accept degradation.
+- **Contract-layer governance (0.7.4)**: five-state task board · orchestrator idle-loop exemption · duplicate-action stop-loss (3× → rollback, no round budget) · load-bearing-conclusion instant verification (E1 at point of production) · in-flight mid-course correction (queued to `collect` boundary + partial-validity assessment, no batch rerun) — full semantics live in `orchestration/contract.md`.
 
 ### Files
 - `.codebuddy-plugin/plugin.json` — package manifest (incl. `requires: deep-market-research >=2.7.0 <3` version pin)
@@ -73,6 +74,7 @@
 7. Re-run the installer; verify platform annex copies match the new version and satisfy the dmr pin.
 
 ### History & roadmap
+- **0.7.5** — 0.7.4 conductivity patch + 4th adapter column: propagates the 0.7.4 contract-layer mechanisms to the executor & doc faces (team-lead SOP five-state task board + mid-correction pointer; README robustness entry; portable stop-loss + load-bearing instant verification; check-8 tokens 五态/中途纠偏; check-9 platform tuple + TRAE); contract adapter table grows 3→4 platforms (TRAE/TraeWork SOLO column: assemble=session-bounded, ≤3 parallel subagents/M4-L0; dispatch=Agent tool + per-role `model` override/M9, ≤3 parallel blind-review/M10; collect=subagent return→pool, R14 queued to subagent boundary) + model-tier & same-model degradation annotation (M9).
 - **0.7.4** — FrontierAgent/Apodex governance audit absorption (5 DAT migrations into contract.md): task-lifecycle five-state board (pending/active/completed/blocked/cancelled, orchestrator-maintained) · orchestrator idle-loop exemption (waiting for sub-agent reports ≠ idle; idle = re-dispatching same task card with zero new evidence) · duplicate-action stop-loss (same query/URL 3× → rollback resample, does not consume round budget) · load-bearing conclusion instant verification (E1 evidence attached at point of production, Phase 2 adjudication only upgrades) · in-flight mid-course correction (user instruction queued to `collect` boundary + partial-validity assessment — unaffected results preserved, no batch rerun; touches the research goal → back to Step 0, source pool retained). Version quadruple-source aligned to 0.7.4.
 - **0.7.3** — install tooling batch: `install.ps1` / `install.sh` one-click annex install with per-platform dmr pin preflight (`.gitattributes` LF pin) — closes the platform-copy drift class (a stale 0.6.1 annex copy was found in the wild, 3 versions behind); README release checklist (7 steps); README Files-section pin sync (`>=2.6.0` → `>=2.7.0`, missed in 0.7.2) + gate check 2 now also enforces the README pin.
 - **0.7.2** — P2 batch (version precision + honest labeling): dmr `requires` tightened to `>=2.7.0 <3` (3-source sync: plugin.json + team-lead frontmatter + portable metadata); Coze column in the contract.md adapter table annotated "design-time, not live-tested".
@@ -124,6 +126,7 @@
 - **三层质检不可互相替代**：6 维闸门（覆盖）/ 对抗审计（反向证据）/ lint（格式引用）——缺任一层必须披露。
 - **成员 checkpoint 义务**：剩余轮次 ≤20%（以各自 frontmatter maxTurns 为基数）或预算预警时——停止采集、回传结构化摘要。
 - **暂停线 / 待接管**：成员超时先落执行快照（已用预算、来源增量、完成/待办）并标「待接管」；主理人三分支裁决——清理重跑（只花全局余量）/ 人工接手 / 接受降级。
+- **契约层治理机制（0.7.4）**：五态任务板 · 主理人空转豁免 · 重复动作止损（连续 3 次→回滚，不耗迭代预算）· 承重结论即时验证（产生处附 E1）· 运行中中途纠偏（排队至 collect 边界 + 部分有效性评估，禁止整批重跑）——完整语义以 `orchestration/contract.md` 为准。
 
 ### 文件结构
 - `.codebuddy-plugin/plugin.json` — 包清单（含 `requires: deep-market-research >=2.7.0 <3` 版本 pin）
@@ -162,6 +165,7 @@
 7. 重跑安装脚本，核对平台 annex 副本版本 = 新版本且满足 dmr pin。
 
 ### 版本历史与路线图
+- **0.7.5** — 0.7.4 传导补丁 + 第 4 平台列：把 0.7.4 契约层机制传到执行者与文档面（team-lead SOP 五态任务板+中途纠偏指针；README 健壮性条目；portable 补止损+承重即时验证；检查 8 加 五态/中途纠偏 token；检查 9 平台元组加 TRAE）；契约适配表 3 平台扩 4 平台（TRAE/TraeWork SOLO 列：assemble=会话级协作边界、按子问题拉起 ≤3 子智能体/M4-L0；dispatch=Agent 工具+角色 `model` 档位 override/M9、并行 ≤3 独立盲评/M10；collect=子代理返回入池、R14 排队至子代理边界）＋模型档位与同模降级标注（M9）。
 - **0.7.4** — FrontierAgent/Apodex 治理审计吸收（contract.md 5 项 DAT 迁移）：任务生命周期五态任务板（pending/active/completed/blocked/cancelled，主理人唯一维护）· 主理人空转豁免（挂起等待子任务回报 ≠ 空转；空转 = 重复派相同任务卡且零新增证据）· 重复动作止损（相同查询/URL 连续 3 次 → 回滚重采样，不消耗迭代预算）· 承重结论即时验证（产生处附 E1 证据，Phase 2 裁决只升不降）· 运行中中途纠偏（用户指令排队至 collect 边界 + 部分有效性评估——未受影响成果保留、禁止整批重跑；触及调研主目标回 Step 0，来源池保留）。版本四源对齐 0.7.4。
 - **0.7.3** — 安装工具批次：`install.ps1` / `install.sh` annex 一键安装＋逐平台 dmr pin 预检（`.gitattributes` 固定 LF）——关闭「平台副本漂移」问题类（实测发现野外 0.6.1 副本落后 3 版）；README 发布清单（7 步）；Files 节 pin 同步（`>=2.6.0` → `>=2.7.0`，0.7.2 漏改）＋门禁检查 2 扩展覆盖 README pin。
 - **0.7.2** — P2 批（版本精确化 + 诚实标注）：dmr `requires` 精确化为 `>=2.7.0 <3`（plugin.json + team-lead frontmatter + portable metadata 三源同步）；contract.md 适配表 Coze 列标注「设计态，未实测」。
