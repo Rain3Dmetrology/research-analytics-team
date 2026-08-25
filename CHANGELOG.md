@@ -1,3 +1,14 @@
+## [0.7.6] - 2026-08-25
+
+启动预检工具批：把「WorkBuddy 侧团队实例重建（上轮建议 3）」的启动检查固化为可执行命令，内嵌进现有安装脚本（复用骨架，未增新脚本、未改任何契约机制）。
+
+### Added
+- **install.ps1 `-Check` / install.sh `--check` 启动预检（只读，不落盘）**：逐平台审计已落位副本——annex `research-orchestrator` 存在性 + dmr pin 满足（缺 dmr / annex 仅警告不阻断）；WorkBuddy 团队包版本与源四源一致 + 4 枚契约机制 marker 传导（SOP 五态任务板 / contract TRAE 列 / 同模降级 / portable 止损）；关键阻断未过 → 非零退出。输出 PASS/FAIL 清单 + 「新建全新团队勿复用旧会话」启动提示。
+- **README 中英「安装」节各补「启动预检」条目**：给出命令、判定含义与新建团队提示（以非平台原语表述，过 audit M2/R2-B primitive 守卫）。
+
+### 验证
+- install.ps1 `-Check` / install.sh `--check` 本机实跑均 PASS、退出码 0；install.sh 经 git-bash `bash -n` 语法校验通过；consistency_check.py 本机门禁 PASSED（v0.7.6）。
+
 ## [0.7.5] - 2026-08-25
 
 0.7.4 传导补丁 + 第 4 平台适配列：把 0.7.4 已交付契约层机制**传导到执行者与文档面**（堵住「机制已交付、执行者/README 不知」漂移，对齐 0.7.1 检查 8 建窗意图）；契约适配表由 3 平台扩为 4 平台（加 TRAE/TraeWork SOLO 列，对齐治理规范 M4 L0 / M9 / M10 / R14）。

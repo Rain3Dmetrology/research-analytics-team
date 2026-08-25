@@ -17,6 +17,7 @@
 ### Install
 - **One-click (annex form)**: run `install.ps1` (Windows) or `./install.sh` (Unix) — copies `portable/SKILL.md` into every detected platform's skills directory as `research-orchestrator` and warns when the installed dmr copy is below the required pin.
 - **WorkBuddy (team form)**: clone this repo, copy the repo root into `~/.workbuddy/plugins/marketplaces/my-experts/plugins/research-analytics-team/`, then enable it in the Expert Center.
+- **Startup preflight (before a WorkBuddy RAT session)**: `install.ps1 -Check` (Windows) or `./install.sh --check` (Unix) — read-only audit that verifies the WorkBuddy team package is at the source version with the contract markers propagated (SOP five-state board · contract TRAE column · same-model degradation · portable stop-loss) and dmr satisfies the pin. `PASS` → safe to launch by **creating a fresh team** (don't reuse an old session, so SOP/contract resolve from the current package); `FAIL` → fix the listed items first.
 - **Other platforms (annex form)**: copy `portable/SKILL.md` into your platform's skills directory. Research intent still routes through dmr; the annex only adds asset routing.
 
 ### Usage
@@ -74,6 +75,7 @@
 7. Re-run the installer; verify platform annex copies match the new version and satisfy the dmr pin.
 
 ### History & roadmap
+- **0.7.6** — startup-preflight tooling batch: hardens "rebuild the WorkBuddy-side team instance" into an executable read-only command embedded in the existing installer (no new script, no mechanism change). `install.ps1 -Check` / `install.sh --check` audits per-platform annex + dmr pin (missing dmr/annex = non-blocking warning), then verifies the WorkBuddy team package matches the source version and the 4 contract markers are propagated (SOP five-state board · contract TRAE column · same-model degradation · portable stop-loss); blocking failures exit non-zero with a PASS/FAIL checklist + a fresh-team launch hint. README Install section doc (EN/CN) + primitive-guard-compliant wording.
 - **0.7.5** — 0.7.4 conductivity patch + 4th adapter column: propagates the 0.7.4 contract-layer mechanisms to the executor & doc faces (team-lead SOP five-state task board + mid-correction pointer; README robustness entry; portable stop-loss + load-bearing instant verification; check-8 tokens 五态/中途纠偏; check-9 platform tuple + TRAE); contract adapter table grows 3→4 platforms (TRAE/TraeWork SOLO column: assemble=session-bounded, ≤3 parallel subagents/M4-L0; dispatch=Agent tool + per-role `model` override/M9, ≤3 parallel blind-review/M10; collect=subagent return→pool, R14 queued to subagent boundary) + model-tier & same-model degradation annotation (M9).
 - **0.7.4** — FrontierAgent/Apodex governance audit absorption (5 DAT migrations into contract.md): task-lifecycle five-state board (pending/active/completed/blocked/cancelled, orchestrator-maintained) · orchestrator idle-loop exemption (waiting for sub-agent reports ≠ idle; idle = re-dispatching same task card with zero new evidence) · duplicate-action stop-loss (same query/URL 3× → rollback resample, does not consume round budget) · load-bearing conclusion instant verification (E1 evidence attached at point of production, Phase 2 adjudication only upgrades) · in-flight mid-course correction (user instruction queued to `collect` boundary + partial-validity assessment — unaffected results preserved, no batch rerun; touches the research goal → back to Step 0, source pool retained). Version quadruple-source aligned to 0.7.4.
 - **0.7.3** — install tooling batch: `install.ps1` / `install.sh` one-click annex install with per-platform dmr pin preflight (`.gitattributes` LF pin) — closes the platform-copy drift class (a stale 0.6.1 annex copy was found in the wild, 3 versions behind); README release checklist (7 steps); README Files-section pin sync (`>=2.6.0` → `>=2.7.0`, missed in 0.7.2) + gate check 2 now also enforces the README pin.
@@ -109,6 +111,7 @@
 ### 安装
 - **一键（annex 形态）**：运行 `install.ps1`（Windows）或 `./install.sh`（Unix）——把 `portable/SKILL.md` 以 `research-orchestrator` 名落位各已检测平台的技能目录，并核对已装 dmr 副本是否满足 pin（不足则告警）。
 - **WorkBuddy（团队形态）**：克隆本仓库，把仓库根目录拷入 `~/.workbuddy/plugins/marketplaces/my-experts/plugins/research-analytics-team/`，在专家中心启用。
+- **启动预检（每次 WorkBuddy RAT 会话前）**：`install.ps1 -Check`（Windows）或 `./install.sh --check`（Unix）——只读审计：核对 WorkBuddy 团队包版本与源一致且契约机制 marker 已传导（SOP 五态任务板 · contract TRAE 列 · 同模降级 · portable 止损），并确认 dmr 满足 pin。`PASS` → 可安全启动（记得 **新建一个全新团队，勿复用旧会话**，使 SOP/契约自当前包实时解析）；`FAIL` → 先修列出的 ✗ 项再启动。
 - **其他平台（annex 形态）**：把 `portable/SKILL.md` 拷入你平台的技能目录。调研意图仍走 dmr；annex 只补充资产路由。
 
 ### 用法
@@ -165,6 +168,7 @@
 7. 重跑安装脚本，核对平台 annex 副本版本 = 新版本且满足 dmr pin。
 
 ### 版本历史与路线图
+- **0.7.6** — 启动预检工具批：把「重建 WorkBuddy 侧团队实例」固化为可执行只读命令，内嵌现有安装脚本（无新脚本、机制零改动）。`install.ps1 -Check` / `install.sh --check` 审计逐平台 annex + dmr pin（缺 dmr/annex=警告不阻断），再核对 WorkBuddy 团队包与源版本一致 + 4 枚契约机制 marker 传导（SOP 五态任务板 · contract TRAE 列 · 同模降级 · portable 止损）；关键阻断非零退出，输出 PASS/FAIL 清单 + 新建团队启动提示。README 安装节补文档（中英）+ primitive 守卫合规表述。
 - **0.7.5** — 0.7.4 传导补丁 + 第 4 平台列：把 0.7.4 契约层机制传到执行者与文档面（team-lead SOP 五态任务板+中途纠偏指针；README 健壮性条目；portable 补止损+承重即时验证；检查 8 加 五态/中途纠偏 token；检查 9 平台元组加 TRAE）；契约适配表 3 平台扩 4 平台（TRAE/TraeWork SOLO 列：assemble=会话级协作边界、按子问题拉起 ≤3 子智能体/M4-L0；dispatch=Agent 工具+角色 `model` 档位 override/M9、并行 ≤3 独立盲评/M10；collect=子代理返回入池、R14 排队至子代理边界）＋模型档位与同模降级标注（M9）。
 - **0.7.4** — FrontierAgent/Apodex 治理审计吸收（contract.md 5 项 DAT 迁移）：任务生命周期五态任务板（pending/active/completed/blocked/cancelled，主理人唯一维护）· 主理人空转豁免（挂起等待子任务回报 ≠ 空转；空转 = 重复派相同任务卡且零新增证据）· 重复动作止损（相同查询/URL 连续 3 次 → 回滚重采样，不消耗迭代预算）· 承重结论即时验证（产生处附 E1 证据，Phase 2 裁决只升不降）· 运行中中途纠偏（用户指令排队至 collect 边界 + 部分有效性评估——未受影响成果保留、禁止整批重跑；触及调研主目标回 Step 0，来源池保留）。版本四源对齐 0.7.4。
 - **0.7.3** — 安装工具批次：`install.ps1` / `install.sh` annex 一键安装＋逐平台 dmr pin 预检（`.gitattributes` 固定 LF）——关闭「平台副本漂移」问题类（实测发现野外 0.6.1 副本落后 3 版）；README 发布清单（7 步）；Files 节 pin 同步（`>=2.6.0` → `>=2.7.0`，0.7.2 漏改）＋门禁检查 2 扩展覆盖 README pin。
