@@ -133,7 +133,7 @@ def _run_self_test():
         "aggregation-gateway qualifier guard",
     )
     _negative_case(
-        "check 13 / R3: 未通过 termination token dropped from team-lead",
+        "check 13 / R3: failure termination token dropped from team-lead",
         n13_drop_failure_token,
         "bounded revise-loop guard",
     )
