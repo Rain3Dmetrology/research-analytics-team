@@ -15,9 +15,9 @@
 - **`portable/SKILL.md` = a platform asset-routing annex, NOT a research entry.** It does not respond to research triggers (`调研 / 竞品 / 尽调 / …` are all owned by dmr). It mounts only when dmr Step 1 — or an explicit user request — needs platform assets: connectors, xlsx/Python modeling, visualization, parallel collection.
 
 ### Install
-- **One-click (annex form)**: run `install.ps1` (Windows) or `./install.sh` (Unix) — copies `portable/SKILL.md` into every detected platform's skills directory as `research-orchestrator` and warns when the installed dmr copy is below the required pin.
+- **One-click (annex form)**: `install.ps1` or `install.sh` checks the installed DMR version range and contract artifacts using standard-library Python before copying the annex; incompatible targets are skipped and the command fails.
 - **WorkBuddy (team form)**: clone this repo, copy the repo root into `~/.workbuddy/plugins/marketplaces/my-experts/plugins/research-analytics-team/`, then enable it in the Expert Center.
-- **Startup preflight (before a WorkBuddy RAT session)**: `install.ps1 -Check` (Windows) or `./install.sh --check` (Unix) — read-only audit that verifies the WorkBuddy team package is at the source version with the contract markers propagated (SOP five-state board · contract TRAE column · same-model degradation · portable stop-loss) and dmr satisfies the pin. `PASS` → safe to launch by **creating a fresh team** (don't reuse an old session, so SOP/contract resolve from the current package); `FAIL` → fix the listed items first.
+- **Startup preflight (before a WorkBuddy RAT session)**: `install.ps1 -Check` or `install.sh --check` verifies DMR contract artifacts and the exact Team package/installed annex file hashes without writing. PASS requires compatible WorkBuddy DMR even if no annex is installed. Start a fresh team after PASS.
 - **Other platforms (annex form)**: copy `portable/SKILL.md` into your platform's skills directory. Research intent still routes through dmr; the annex only adds asset routing.
 
 ### Usage
@@ -27,9 +27,9 @@
 
 ### Engineering robustness
 - **Acceptance-first**: before `dispatch` the lead produces acceptance criteria (each with a measurable anchor) + three-state termination conditions (criteria met / budget exhausted / max N rounds), confirmed by the user in one round — aligned with dmr Step 0.
-- **Budget governor**: wall-clock SLA (std ≤30 min / fast ≤10 min) + search cap ≤60 with an honest counting clause (hard limit vs self-count, disclosed in the run manifest), 80% early warning / 100% freeze → degraded delivery; gateway (AgentEarth etc., if connected) calls tracked on a credit track (calls × 0.5 credit each, soft warning line 30).
+- **Budget governor**: wall-clock SLA (std ≤30 min / fast ≤10 min) + search cap ≤60 with an honest counting clause (hard limit vs self-count, disclosed in the run manifest), 80% early warning / 100% freeze → degraded delivery; gateway calls accounted for per provider and operation using DMR Run Contract v1; unknown costs retain reservations.
 - **Two-phase source pool**: Phase-1 domain pre-allocation (academic / Chinese UGC / quantitative — one owner per entity×domain) kills duplicate collection; Phase-2 merge adjudication is the only evidence entry.
-- **Domain-independence adjudication gate**: every candidate `Confirmed` conclusion gets its supporting sources tagged by collection domain (D1–D6); a same-domain source pair caps the label at `Corroborated`.
+- **Evidence independence gate**: DMR Evidence Contract v1 governs claim-level origin, publisher, document and unresolved counter-evidence. Collection domains are allocation labels only.
 - **run-manifest.json** per run: query, param card, final source pool, adjudication decisions, component versions, budget consumption, degradation events.
 - **Adversarial audit floor**: role-swapped critics (external model, or a declared "opposing reviewer" on same-model fallback), each producing a ≥3-item counter-evidence list that must land in the contradiction ledger.
 - **Three QC layers, non-interchangeable**: 6-dimension gate (coverage) / adversarial audit (counter-evidence) / lint (format & citations) — missing any layer must be disclosed.
@@ -38,7 +38,7 @@
 - **Contract-layer governance (0.7.4)**: five-state task board · orchestrator idle-loop exemption · duplicate-action stop-loss (3× → rollback, no round budget) · load-bearing-conclusion instant verification (E1 at point of production) · in-flight mid-course correction (queued to `collect` boundary + partial-validity assessment, no batch rerun) — full semantics live in `orchestration/contract.md`.
 
 ### Files
-- `.codebuddy-plugin/plugin.json` — package manifest (incl. `requires: deep-market-research >=2.7.0 <3` version pin)
+- `.codebuddy-plugin/plugin.json` — package manifest (incl. `requires: deep-market-research >=2.9.1 <3` version pin)
 - `agents/` — 5 role agents (team-lead + 4 members)
 - `avatars/` — member icons (256×256, ≤18 KB each)
 - `portable/SKILL.md` — cross-platform asset-routing annex
@@ -61,11 +61,12 @@
 10. pause-line guard (timeout → snapshot → pending-takeover, 3-branch adjudication; rerun spends the global slack, never raises the cap)
 11. agent-roster freeze (R1): agents/ stays exactly the 5 fixed role files — six-domain routing is a table, not extra headcount
 12. aggregation-gateway qualifier guard (R2): every agentearth/agentkey mention in data-sourcer.md carries a conditional qualifier (若平台已连 / 已连才启用) within 200 chars — gateways stay optional enhancement layers
-13. bounded revise-loop guard (R3): team-lead keeps the "最多 2 轮修订 + 强制通过" termination tokens; no unbounded-loop vocabulary
+13. bounded revise-loop guard (R3): team-lead keeps the "最多 2 轮修订 + 未通过" termination tokens; no unbounded-loop vocabulary
 
 `--self-test` runs the negative matrix in CI: 3 injected violations, each must FAIL the gate.
 
 ### Release checklist
+DMR candidate must be reviewed/merged first; Team CI checks the actual DMR main compatibility target. Candidate versions are not release tags.
 1. Before merge: `python scripts/consistency_check.py` (+ `--self-test`) passes locally.
 2. Version parity: plugin.json == portable frontmatter == portable body note == CHANGELOG top; README history entries (EN+CN) and the Files-section pin updated in the same commit.
 3. Smoke both installers: `install.ps1` on Windows, `install.sh` in a Linux container.
@@ -75,6 +76,8 @@
 7. Re-run the installer; verify platform annex copies match the new version and satisfy the dmr pin.
 
 ### History & roadmap
+Historical entries below describe former behavior; current rules supersede prior gates.
+- **0.7.7** — P0 candidate: shared DMR evidence/run contracts, no forced acceptance, strict compatibility preflight. Unreleased.
 - **0.7.6** — startup-preflight tooling batch: hardens "rebuild the WorkBuddy-side team instance" into an executable read-only command embedded in the existing installer (no new script, no mechanism change). `install.ps1 -Check` / `install.sh --check` audits per-platform annex + dmr pin (missing dmr/annex = non-blocking warning), then verifies the WorkBuddy team package matches the source version and the 4 contract markers are propagated (SOP five-state board · contract TRAE column · same-model degradation · portable stop-loss); blocking failures exit non-zero with a PASS/FAIL checklist + a fresh-team launch hint. README Install section doc (EN/CN) + primitive-guard-compliant wording.
 - **0.7.5** — 0.7.4 conductivity patch + 4th adapter column: propagates the 0.7.4 contract-layer mechanisms to the executor & doc faces (team-lead SOP five-state task board + mid-correction pointer; README robustness entry; portable stop-loss + load-bearing instant verification; check-8 tokens 五态/中途纠偏; check-9 platform tuple + TRAE); contract adapter table grows 3→4 platforms (TRAE/TraeWork SOLO column: assemble=session-bounded, ≤3 parallel subagents/M4-L0; dispatch=Agent tool + per-role `model` override/M9, ≤3 parallel blind-review/M10; collect=subagent return→pool, R14 queued to subagent boundary) + model-tier & same-model degradation annotation (M9).
 - **0.7.4** — FrontierAgent/Apodex governance audit absorption (5 DAT migrations into contract.md): task-lifecycle five-state board (pending/active/completed/blocked/cancelled, orchestrator-maintained) · orchestrator idle-loop exemption (waiting for sub-agent reports ≠ idle; idle = re-dispatching same task card with zero new evidence) · duplicate-action stop-loss (same query/URL 3× → rollback resample, does not consume round budget) · load-bearing conclusion instant verification (E1 evidence attached at point of production, Phase 2 adjudication only upgrades) · in-flight mid-course correction (user instruction queued to `collect` boundary + partial-validity assessment — unaffected results preserved, no batch rerun; touches the research goal → back to Step 0, source pool retained). Version quadruple-source aligned to 0.7.4.
@@ -109,9 +112,9 @@
 - **`portable/SKILL.md` = 平台资产路由 annex，不是调研入口。** 它不响应调研类触发词（`调研 / 竞品 / 尽调 / …` 均归 dmr 接管）；仅当 dmr Step 1——或用户明确点名——需要平台资产（连接器、xlsx/Python 建模、可视化、并行采集）时才挂载。
 
 ### 安装
-- **一键（annex 形态）**：运行 `install.ps1`（Windows）或 `./install.sh`（Unix）——把 `portable/SKILL.md` 以 `research-orchestrator` 名落位各已检测平台的技能目录，并核对已装 dmr 副本是否满足 pin（不足则告警）。
+- **一键（annex 形态）**：使用 `install.ps1` 或 `install.sh`；先用标准库 Python 校验 DMR 版本上下界与契约文件，不兼容的目标跳过且返回非零。
 - **WorkBuddy（团队形态）**：克隆本仓库，把仓库根目录拷入 `~/.workbuddy/plugins/marketplaces/my-experts/plugins/research-analytics-team/`，在专家中心启用。
-- **启动预检（每次 WorkBuddy RAT 会话前）**：`install.ps1 -Check`（Windows）或 `./install.sh --check`（Unix）——只读审计：核对 WorkBuddy 团队包版本与源一致且契约机制 marker 已传导（SOP 五态任务板 · contract TRAE 列 · 同模降级 · portable 止损），并确认 dmr 满足 pin。`PASS` → 可安全启动（记得 **新建一个全新团队，勿复用旧会话**，使 SOP/契约自当前包实时解析）；`FAIL` → 先修列出的 ✗ 项再启动。
+- **启动预检（每次 WorkBuddy RAT 会话前）**：`install.ps1 -Check` 或 `install.sh --check` 只读核对 DMR 版本、契约文件、Team 包与已安装 annex 的文件哈希；即使 annex 未装，WorkBuddy DMR 也必须兼容。PASS 后新建团队，FAIL 不启动。
 - **其他平台（annex 形态）**：把 `portable/SKILL.md` 拷入你平台的技能目录。调研意图仍走 dmr；annex 只补充资产路由。
 
 ### 用法
@@ -121,9 +124,9 @@
 
 ### 工程健壮性
 - **验收先行**：`dispatch` 前主编产出验收标准（每条含度量锚点）＋ 终止条件三态（达标即停 / 预算耗尽即停 / 最多 N 轮），交用户 1 轮确认——与 dmr Step 0 产出行对齐。
-- **全局预算器**：墙钟 SLA（标准版 ≤30 分钟 / 快版 ≤10 分钟）+ 搜索封顶 ≤60 次，附计数口径诚实条款（硬限 / 自计数，记入 run-manifest），80% 预警 / 100% 冻结 → 降级交付；聚合网关（AgentEarth 等，若平台已连）调用另记 credit 口径（调用数 × 0.5 credit/次，软预警线 30）。
+- **全局预算器**：墙钟 SLA（标准版 ≤30 分钟 / 快版 ≤10 分钟）+ 搜索封顶 ≤60 次，附计数口径诚实条款（硬限 / 自计数，记入 run-manifest），80% 预警 / 100% 冻结 → 降级交付；聚合网关（若已连且授权）按 Provider/操作分别核算 credit，遵循 DMR Run Contract v1；未知实际费用保留预留。
 - **两段式来源池**：Phase1 分域预分配（学术 / 中文 UGC / 测算——每实体×域唯一属主）杜绝重复采集；Phase2 合并裁决是唯一证据入口。
-- **域独立性裁决门**：候选 `Confirmed` 结论的支撑源逐一标注采集域（D1–D6）；存在同域源对时该结论最高标 `Corroborated`。
+- **证据独立性裁决门**：统一使用 DMR Evidence Contract v1，按原始文档、发布者、传播链和反证裁决；域仅用于分工。
 - **run-manifest.json** 逐次归档：查询原文、参数卡、来源池终态、裁决决策、组件版本、预算消耗、降级事件。
 - **对抗审计最低标准**：换角色视角 critic（外部模型，或同模回退时声明「反方审稿人」），每类产出 ≥3 条反证清单，必须落入矛盾台账。
 - **三层质检不可互相替代**：6 维闸门（覆盖）/ 对抗审计（反向证据）/ lint（格式引用）——缺任一层必须披露。
@@ -132,7 +135,7 @@
 - **契约层治理机制（0.7.4）**：五态任务板 · 主理人空转豁免 · 重复动作止损（连续 3 次→回滚，不耗迭代预算）· 承重结论即时验证（产生处附 E1）· 运行中中途纠偏（排队至 collect 边界 + 部分有效性评估，禁止整批重跑）——完整语义以 `orchestration/contract.md` 为准。
 
 ### 文件结构
-- `.codebuddy-plugin/plugin.json` — 包清单（含 `requires: deep-market-research >=2.7.0 <3` 版本 pin）
+- `.codebuddy-plugin/plugin.json` — 包清单（含 `requires: deep-market-research >=2.9.1 <3` 版本 pin）
 - `agents/` — 5 个角色 agent（主理人 + 4 成员）
 - `avatars/` — 成员图标（256×256，单张 ≤18KB）
 - `portable/SKILL.md` — 跨平台资产路由 annex
@@ -154,7 +157,7 @@
 10. 暂停线守卫（超时 → 快照 → 待接管 → 三分支裁决；重跑只花全局余量、永不追加封顶）
 11. 编制冻结守卫（R1）：agents/ 恒为 5 个既定角色文件——六域路由是表不是编制，禁建数据源绑定型 subagent
 12. 聚合网关限定词守卫（R2）：data-sourcer.md 中 agentearth/agentkey 每次出现处邻近 200 字符内必含限定词（若平台已连 / 已连才启用）——网关只作可选增强层，不作硬配置数据源
-13. 有界修订循环守卫（R3）：team-lead 保有「最多 2 轮修订＋强制通过」终止 token；验收循环无无界语汇
+13. 有界修订循环守卫（R3）：team-lead 保有「最多 2 轮修订＋未通过」终止 token；验收循环无无界语汇
 
 `--self-test` 在 CI 中运行负向矩阵：3 例注入违例，每例必须使门禁 FAIL。
 
@@ -168,6 +171,7 @@
 7. 重跑安装脚本，核对平台 annex 副本版本 = 新版本且满足 dmr pin。
 
 ### 版本历史与路线图
+- **0.7.7** — P0 候选：统一证据与运行契约、取消强制通过、强化兼容性预检。尚未发布。
 - **0.7.6** — 启动预检工具批：把「重建 WorkBuddy 侧团队实例」固化为可执行只读命令，内嵌现有安装脚本（无新脚本、机制零改动）。`install.ps1 -Check` / `install.sh --check` 审计逐平台 annex + dmr pin（缺 dmr/annex=警告不阻断），再核对 WorkBuddy 团队包与源版本一致 + 4 枚契约机制 marker 传导（SOP 五态任务板 · contract TRAE 列 · 同模降级 · portable 止损）；关键阻断非零退出，输出 PASS/FAIL 清单 + 新建团队启动提示。README 安装节补文档（中英）+ primitive 守卫合规表述。
 - **0.7.5** — 0.7.4 传导补丁 + 第 4 平台列：把 0.7.4 契约层机制传到执行者与文档面（team-lead SOP 五态任务板+中途纠偏指针；README 健壮性条目；portable 补止损+承重即时验证；检查 8 加 五态/中途纠偏 token；检查 9 平台元组加 TRAE）；契约适配表 3 平台扩 4 平台（TRAE/TraeWork SOLO 列：assemble=会话级协作边界、按子问题拉起 ≤3 子智能体/M4-L0；dispatch=Agent 工具+角色 `model` 档位 override/M9、并行 ≤3 独立盲评/M10；collect=子代理返回入池、R14 排队至子代理边界）＋模型档位与同模降级标注（M9）。
 - **0.7.4** — FrontierAgent/Apodex 治理审计吸收（contract.md 5 项 DAT 迁移）：任务生命周期五态任务板（pending/active/completed/blocked/cancelled，主理人唯一维护）· 主理人空转豁免（挂起等待子任务回报 ≠ 空转；空转 = 重复派相同任务卡且零新增证据）· 重复动作止损（相同查询/URL 连续 3 次 → 回滚重采样，不消耗迭代预算）· 承重结论即时验证（产生处附 E1 证据，Phase 2 裁决只升不降）· 运行中中途纠偏（用户指令排队至 collect 边界 + 部分有效性评估——未受影响成果保留、禁止整批重跑；触及调研主目标回 Step 0，来源池保留）。版本四源对齐 0.7.4。

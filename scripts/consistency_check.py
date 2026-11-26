@@ -38,7 +38,7 @@ Fails the build when any of these drift:
      conditional qualifier (若平台已连 / 已连才启用) within 200 chars —
      gateways stay optional enhancement layers, never hardwired sources
  13. bounded revise-loop guard (red line R3): team-lead keeps the
-     "最多 2 轮修订" + "强制通过" termination tokens and carries no
+     "最多 2 轮修订" + "未通过" termination tokens and carries no
      unbounded-loop vocabulary
 
 `--self-test` runs the negative matrix: 3 injected violations, each must
@@ -117,10 +117,10 @@ def _run_self_test():
             encoding="utf-8",
         )
 
-    def n13_drop_forced_pass_token(tree):
+    def n13_drop_failure_token(tree):
         p = tree / "agents" / "research-analytics-team-team-lead.md"
         txt = p.read_text(encoding="utf-8")
-        p.write_text(txt.replace("强制通过", "通过"), encoding="utf-8")
+        p.write_text(txt.replace("未通过", "通过"), encoding="utf-8")
 
     _negative_case(
         "check 11 / R1: 6th data-source-bound agent file injected",
@@ -133,8 +133,8 @@ def _run_self_test():
         "aggregation-gateway qualifier guard",
     )
     _negative_case(
-        "check 13 / R3: 强制通过 termination token dropped from team-lead",
-        n13_drop_forced_pass_token,
+        "check 13 / R3: 未通过 termination token dropped from team-lead",
+        n13_drop_failure_token,
         "bounded revise-loop guard",
     )
     print("SELF-TEST PASSED: 3 negative injections all failed the gate as required")
@@ -285,6 +285,19 @@ if REGISTRY_REF not in lead:
 if REGISTRY_REF not in portable:
     fail(f"portable/SKILL.md must route connector usage to the dmr registry ({REGISTRY_REF}) as the single source of truth (audit V2)")
 
+if REGISTRY_REF not in (ROOT / "agents" / "data-sourcer.md").read_text(encoding="utf-8"):
+    fail("data-sourcer must use DMR source routing")
+for txt in (lead, portable):
+    if "Evidence Contract v1" not in txt:
+        fail("DMR Evidence Contract v1 reference missing")
+    if "同域多源不累计独立性" in txt or "存在**同域对**" in txt:
+        fail("collection domain is not evidence independence")
+
+for txt in (lead, portable, (ROOT / "orchestration" / "contract.md").read_text(encoding="utf-8")):
+    if "references/run-contract.md" not in txt:
+        fail("DMR Run Contract v1 reference missing")
+    if "0.5 credit/次" in txt:
+        fail("hardcoded gateway unit pricing forbidden")
 # --- 8. README drift guard (audit M1) ----------------------------------------
 CHECK_COUNT = 13
 README_FORBIDDEN = [
@@ -298,7 +311,7 @@ README_REQUIRED = [
     "待接管",        # 0.6.0 pause-line/takeover semantics must stay documented
     "credit",       # 0.7.0 gateway-credit budget track must stay documented
     "验收标准",      # 0.7.0 acceptance-first (aligned with dmr Step 0) must stay documented
-    "域独立性",      # 0.7.0 same-domain-source cap (Corroborated, not Confirmed) must stay documented
+    "证据独立性",    # evidence origin, not collection domain
     "五态",          # 0.7.4 contract-layer five-state task board must stay documented in README
     "中途纠偏",      # 0.7.4 in-flight correction must stay documented in README
 ]
@@ -396,12 +409,17 @@ for gm in GATEWAY_RE.finditer(sourcer):
 # --- 13. bounded revise-loop guard (red line R3) --------------------------------
 # The acceptance/revise loop must keep its termination tokens and must not
 # pick up unbounded-loop vocabulary.
-for token in ("最多 2 轮修订", "强制通过"):
+for token in ("最多 2 轮修订", "未通过"):
     if token not in lead:
         fail(f"bounded revise-loop guard (R3): team-lead lost termination token {token!r}")
 for token in ("无限循环", "直到满意", "直到完美", "不限轮次", "无上限修订"):
     if token in lead:
         fail(f"bounded revise-loop guard (R3): team-lead contains unbounded-loop vocabulary {token!r}")
+
+if any('强制通过' in s for s in (lead, portable)):
+    fail('bounded revise-loop guard (R3): unconditional acceptance forbidden')
+if '只升不降' in (ROOT / 'orchestration' / 'contract.md').read_text(encoding='utf-8'):
+    fail('bounded revise-loop guard (R3): irreversible confidence forbidden')
 
 # --- report -----------------------------------------------------------------
 if errors:

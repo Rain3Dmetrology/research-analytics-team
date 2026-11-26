@@ -1,3 +1,7 @@
+## [0.7.7] - 2026-11-26
+
+- P0 candidate: DMR 2.9.1 contract compatibility, reversible confidence, honest termination, source routing and budget governance. Unreleased.
+
 ## [0.7.6] - 2026-08-25
 
 启动预检工具批：把「WorkBuddy 侧团队实例重建（上轮建议 3）」的启动检查固化为可执行命令，内嵌进现有安装脚本（复用骨架，未增新脚本、未改任何契约机制）。
