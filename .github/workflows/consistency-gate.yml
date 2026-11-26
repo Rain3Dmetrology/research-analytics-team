@@ -5,10 +5,14 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   consistency:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -16,5 +20,18 @@ jobs:
           python-version: "3.12"
       - name: Single-source-of-truth consistency gate
         run: python scripts/consistency_check.py
-      - name: Negative matrix self-test (red lines R1-R3)
+      - name: Negative matrix self-test
         run: python scripts/consistency_check.py --self-test
+      - name: Compatibility negative matrix
+        run: python scripts/test_compatibility.py
+      - name: Checkout DMR compatibility target
+        uses: actions/checkout@v5
+        with:
+          repository: Rain3Dmetrology/deep-market-research
+          ref: main
+          path: dmr-core
+          persist-credentials: false
+      - name: Cross-repository contract check
+        run: python scripts/compatibility_check.py --dmr dmr-core
+      - name: Native installer smoke
+        run: python scripts/test_install_smoke.py dmr-core

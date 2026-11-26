@@ -12,15 +12,15 @@ compatibility: >
   由 dmr Step 1 显式挂载，不再自称单会话等价实现）；
   平台专属能力（Connector/MCP/automation/Skill 调用）按平台可用性尽力启用，缺失则回退默认层（内置搜索 + 免费 API）。
 metadata:
-  version: "0.7.6"
+  version: "0.7.7"
   author: "Rain / WorkBuddy"
   source_of_truth: "deep-market-research SKILL.md（调研 SOP 权威）+ research-analytics-team-team-lead.md（团队编排权威）"
-  requires: "deep-market-research >=2.7.0 <3"
+  requires: "deep-market-research >=2.9.1 <3"
 ---
 
 # Research Orchestrator — 平台资产路由 Annex（便携版 / 跨平台）
 
-> 版本 0.7.6 ｜ 定位：**dmr 的采集素材增强附件（annex）**——不是调研内核，也不是单会话等价实现。
+> 版本 0.7.7 ｜ 定位：**dmr 的采集素材增强附件（annex）**——不是调研内核，也不是单会话等价实现。
 > **意图路由与调研 SOP 的唯一权威是 deep-market-research（dmr）**；本 annex 仅在 dmr 流水线需要平台资产（L3/L4/L5）或并行采集编排时被挂载。团队编排形态的权威是 `research-analytics-team-team-lead.md`。
 > 跨平台：WorkBuddy 直接可用；Trae / Cursor / CodeBuddy 等 Markdown 技能平台可加载本文件，平台专属能力（Connector/MCP/automation/Skill）按可用性尽力启用，缺失回退默认层（内置搜索 + 免费 API）。
 
@@ -68,18 +68,7 @@ dmr 的置信标签（Confirmed/Corroborated/Single-source/Unverified）、矛�
 - **禁止**：模型输出当确定性结论；预测类标 `Single-source` 列入开放问题。
 
 ### 3.2 L4 取数子流（取数）
-按平台可用连接器取结构化一手数据，**状态一律条件式（"若平台已连"），绝不硬编码已连**：
-
-| 维度 | 连接器（若平台已连） | 团队对应角色 |
-|------|----------------------|--------------|
-| 专利 | patsnap-search（智慧芽） | data-sourcer |
-| 行情/财报 | westock-mcp（腾讯自选股） | data-sourcer |
-| 基金/资产 | yingmi-mcp（盈米，可选） | data-sourcer |
-| 代码/技术 | github MCP + gh CLI | data-sourcer |
-| 工商/司法/知产 | tyc-mcp（天眼查，需启用） | data-sourcer |
-| App 商店 | agent-browser 抓公开页（降级源） | 降级 T4 |
-
-> 连接器状态与用法以 **dmr references/data-sources.md** 为唯一注册表（本表只做通道路由，不复写注册表）；未连/全失效 → 回退内置搜索 + dmr 源分级兜底，标注"该维度因环境受限未覆盖"，不阻断。
+仅把 DMR 已选的证据能力映射到宿主可用资产，具体 Provider 由 **dmr references/data-sources.md** 唯一决定；接入映射查 `references/cross-platform-tools.md`。未连接、未授权或无法访问时按 DMR 降级并披露未覆盖，不把目录中的候选当作已连。
 
 ### 3.3 L5 可视化子流（展示）
 - 交互图表：plotly 生成可交互 HTML（对比/趋势/排名）。
@@ -91,9 +80,9 @@ dmr 的置信标签（Confirmed/Corroborated/Single-source/Unverified）、矛�
 ## 四、并行加速
 
 在 dmr Step 1（采集）阶段，对可独立子任务并行采集（平台支持子代理/Agent 时）：
-- A：学术/免费 API 源（OpenAlex/Semantic Scholar/arXiv…）
-- B：中文 UGC/公众号/知乎（agent-browser + wechat-article-search）
-- C：专业 MCP 取数（智慧芽/自选股/tyc）
+- A：学术/原始论文证据（按 DMR 路由）
+- B：中文 UGC/公众号（按 DMR 路由）
+- C：专业结构化取数（按 DMR 路由）
 - D：L3 数据预处理（若用户上传数据集）
 
 **`dispatch` 前必做分域预分配**：A/B/C/D 即采集域——同一实体同一域只指派一路 owner（并行阶段互相看不见回写，实时去重不可靠）；去重裁决推迟到各路回灌后的合并步（保留更高 Tier/更新日期，冲突入矛盾台账）。
@@ -109,11 +98,11 @@ dmr 的置信标签（Confirmed/Corroborated/Single-source/Unverified）、矛�
 - **失败兜底**：调度失败重试 1 次否则降级 dmr 单线程（至少 Step1+Step4+Step8）；来源不足如实标 `Unverified`/`未覆盖` 不编造；连接器未连条件式跳过。
 - **介入窗口**：每阶段进度通报后显式询问用户「继续 / 转向 / 补充信源」（快版免询问）；中途追加信源 → 写入来源池触发局部重算，不整轮重跑。
 - **进度通报**：每阶段结束通报（已完成/进行中/已确认结论/预算消耗/风险降级/下一步）；终稿含**质量双轴**——评分卡（dmr 100 分制）+ 置信分布占比——与最大不确定性 1 条；方法论声明固定含**裁决路径**（多路终裁 / 单线程自裁）与降级未执行项。
-- **来源池两段式复用**：已收集来源池为唯一证据入口；并行 `dispatch` 前做分域预分配（同一实体同一域只一路 owner），回灌后合并去重裁决；新源回写、跨阶段只从此池取数。
+- **来源池两段式复用**：已收集来源池为唯一证据入口；并行 `dispatch` 前做分域预分配（同一实体同一域只一路 owner），回灌后合并去重裁决；新源按 DMR Evidence Contract v1 回写、跨阶段只从此池取数；域不作为独立性裁决。
 - **重复动作止损**：任一路子代理重复相同查询/URL **连续 ≥3 次** → 回滚该动作重采样，**不消耗采集轮次预算**；**承重中间结果**在产生处即时附加 E1 级证据（源 URL+层级+日期）随回传统一回写，不等终稿对抗审计倒推（对齐治理规范 §二 E 与 §六.5）。
 - **渲染收敛**：并行子任务只产条目级结构化证据表，全文渲染只在收口阶段一次完成。
-- **收尾三件套**：① 知识沉淀（dmr §七对齐：评分卡+开放问题+核心证据 → 结构化 note，重跑同主题先读历史 note）；② `run-manifest.json`（查询/参数卡快照/来源池终态/裁决决策/组件版本/预算消耗/降级事件）随报告归档；③ 下次同域调研预热提示。
-- **6 维质检 + 有界修订循环**：维度与轮次口径以 dmr 为唯一定义处（章节级最多 3 轮，第 3 轮强制通过并附遗留改进）；终稿闸门只复检不重定义；命中硬性退回条件退回责任环节局部 patch，最多 2 轮 + 第 3 次强制通过并附遗留改进建议，残留转开放问题。
+- **收尾三件套**：① 知识沉淀（仅按用户授权或既定 workspace 流程，复用获准访问的历史 note）；② `run-manifest.json` 按 DMR Run Contract v1（`references/run-contract.md`）归档，无法持久化则披露；③ 下次同域调研预热提示。
+- **6 维质检 + 有界修订循环**：维度与轮次口径以 dmr 为唯一定义处（初审后最多 2 轮修订，未达标即停止并明确未通过）；终稿闸门只复检不重定义；命中硬性退回条件退回责任环节局部 patch，最多 2 轮修订；硬性问题残留则未通过，披露遗留问题并降级交付。
 
 ---
 
