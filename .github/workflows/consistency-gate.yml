@@ -33,3 +33,5 @@ jobs:
           persist-credentials: false
       - name: Cross-repository contract check
         run: python scripts/compatibility_check.py --dmr dmr-core
+      - name: Native installer smoke
+        run: python scripts/test_install_smoke.py dmr-core
